@@ -49,4 +49,37 @@ df <- full_join(dataframe, Aantal_woningen, by=c("jaar","Regio's"))
 
 remove_missing(df, na.rm = FALSE, vars = c("waarde.x", "waarde.y","Beginstand voorraad", "Nieuwbouw", "Eindstand Voorraad"), finite = FALSE)
 
-df2 <- remove_missing(df, na.rm = FALSE, vars = c("waarde.x", "waarde.y","Beginstand voorraad", "Nieuwbouw", "Eindstand Voorraad"), finite = FALSE)
+df2 <- remove_missing(df, na.rm = FALSE,
+                      vars = c("waarde.x", "waarde.y","Beginstand voorraad", "Nieuwbouw", "Eindstand Voorraad"), 
+                      finite = FALSE)
+df2$Verkoopprijs <- df2$waarde.x
+df2$BevolkGrootte <- df2$waarde.y
+df2$waarde.x <- NULL
+df2$waarde.y <- NULL
+df2$Onderwerp.x <- NULL
+df2$Onderwerp.y <- NULL
+
+#filter op regio
+plotdata = df2 %>% filter(`Regio's` == "Amersfoort")
+
+#tijdsvisualisatie
+plotdata$jaar <- as.numeric(plotdata$jaar)
+
+ggplot(plotdata, aes(x = jaar, y = Verkoopprijs)) +
+  geom_point() +
+  xlab("Year") +
+  ylab("Price in € (x1000)") +
+  geom_line() +
+  scale_y_continuous(
+  breaks = seq(300000, 500000, 100000),    
+  labels = function(x) x / 1000) +
+  scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
+
+#subgroep analyse
+
+#voorstel jack voor later
+q1price <- subset(df2, waarde.x >= quartiles[1] & value <= quartiles[2])  # 0–25%
+q2price <- subset(df2, waarde.x >  quartiles[2] & value <= quartiles[3])  # 25–50%
+q3price <- subset(df2, waarde.x >  quartiles[3] & value <= quartiles[4])  # 50–75%
+q4price <- subset(df2, waarde.x >  quartiles[4] & value <= quartiles[5])  # 75–100%
+
