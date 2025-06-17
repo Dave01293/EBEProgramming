@@ -69,11 +69,13 @@ ggplot(plotdata, aes(x = jaar, y = Verkoopprijs)) +
   geom_point() +
   xlab("Year") +
   ylab("Price in € (x1000)") +
+  ggtitle("Housing prices per year") +
   geom_line() +
   scale_y_continuous(
   breaks = seq(300000, 500000, 100000),    
   labels = function(x) x / 1000) +
   scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
+
 
 #adding variables
 df2 <- df2 %>%
@@ -92,20 +94,16 @@ BevolkMean2020 <- mean(data2020$BevolkGrootte, na.rm = TRUE)
 
 data2020$GrootteBevolking <- 0
 data2020$GrootteBevolking <- data2020$GrootteBevolking %>% 
-  replace(data2020$BevolkGrootte < BevolkMean2020, "Klein")
+  replace(data2020$BevolkGrootte < BevolkMean2020, "Small")
 data2020$GrootteBevolking <- data2020$GrootteBevolking %>% 
-  replace(data2020$BevolkGrootte >= BevolkMean2020, "Groot")
+  replace(data2020$BevolkGrootte >= BevolkMean2020, "Big")
 
 ggplot(data = data2020, 
        aes(x = GrootteBevolking, y = GrowthPercentageVoorraad)) +
-  geom_boxplot()
-#BevolkOnderMean <- data2020[data2020$BevolkGrootte < BevolkMean2020]
-#BevolkBovenMean <- data2020[data2020$BevolkGrootte > BevolkMean2020]
+  geom_boxplot() +
+  xlab("Population size") +
+  ylab("Growth housing supply in percentage") +
+  ggtitle("Housing supply growth per subgroup")
 
 
-#voorstel jack voor later
-#q1price <- subset(df2, waarde.x >= quartiles[1] & value <= quartiles[2])  # 0–25%
-#q2price <- subset(df2, waarde.x >  quartiles[2] & value <= quartiles[3])  # 25–50%
-#q3price <- subset(df2, waarde.x >  quartiles[3] & value <= quartiles[4])  # 50–75%
-#q4price <- subset(df2, waarde.x >  quartiles[4] & value <= quartiles[5])  # 75–100%
 
