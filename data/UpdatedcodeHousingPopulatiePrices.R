@@ -75,11 +75,37 @@ ggplot(plotdata, aes(x = jaar, y = Verkoopprijs)) +
   labels = function(x) x / 1000) +
   scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
 
+#adding variables
+df2 <- df2 %>%
+  group_by(`Regio's`) %>%
+  mutate(GrowthPercentageBevolking = (BevolkGrootte / lag(BevolkGrootte)-1)*100)
+
+df2 <- df2 %>%
+  group_by(`Regio's`) %>%
+  mutate(GrowthPercentageVoorraad = (`Eindstand voorraad` / lag(`Eindstand voorraad`)-1)*100)
+
 #subgroep analyse
 
+data2020 <- subset(df2, jaar == 2020)
+
+BevolkMean2020 <- mean(data2020$BevolkGrootte, na.rm = TRUE)
+
+data2020$GrootteBevolking <- 0
+data2020$GrootteBevolking <- data2020$GrootteBevolking %>% 
+  replace(data2020$BevolkGrootte < BevolkMean2020, "Klein")
+data2020$GrootteBevolking <- data2020$GrootteBevolking %>% 
+  replace(data2020$BevolkGrootte >= BevolkMean2020, "Groot")
+
+ggplot(data = data2020, 
+       aes(x = GrootteBevolking, y = GrowthPercentageVoorraad)) +
+  geom_boxplot()
+#BevolkOnderMean <- data2020[data2020$BevolkGrootte < BevolkMean2020]
+#BevolkBovenMean <- data2020[data2020$BevolkGrootte > BevolkMean2020]
+
+
 #voorstel jack voor later
-q1price <- subset(df2, waarde.x >= quartiles[1] & value <= quartiles[2])  # 0–25%
-q2price <- subset(df2, waarde.x >  quartiles[2] & value <= quartiles[3])  # 25–50%
-q3price <- subset(df2, waarde.x >  quartiles[3] & value <= quartiles[4])  # 50–75%
-q4price <- subset(df2, waarde.x >  quartiles[4] & value <= quartiles[5])  # 75–100%
+#q1price <- subset(df2, waarde.x >= quartiles[1] & value <= quartiles[2])  # 0–25%
+#q2price <- subset(df2, waarde.x >  quartiles[2] & value <= quartiles[3])  # 25–50%
+#q3price <- subset(df2, waarde.x >  quartiles[3] & value <= quartiles[4])  # 50–75%
+#q4price <- subset(df2, waarde.x >  quartiles[4] & value <= quartiles[5])  # 75–100%
 
