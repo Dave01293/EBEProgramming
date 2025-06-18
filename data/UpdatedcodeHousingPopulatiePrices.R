@@ -101,6 +101,17 @@ ggplot(data = data2020,
   ylab("Growth housing supply in percentage") +
   ggtitle("Housing supply growth per subgroup")
 
+
+#install shapefile
+require(cbsodataR)
+require(sf)
+library(cbsodataR)
+library(sf)
+
+gemeente_2024 <- cbs_get_sf("gemeente", 2024)
+
+
+
 #Creating Heatmap 
 
 
