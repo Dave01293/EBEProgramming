@@ -103,16 +103,32 @@ ggplot(data = data2020,
 
 
 #install shapefile
-require(cbsodataR)
-require(sf)
+install.packages("cbsodataR")
+install.packages("sf")
+install.packages("ggplot2")
 library(cbsodataR)
 library(sf)
+library(ggplot2)
 
 gemeente_2024 <- cbs_get_sf("gemeente", 2024)
 
+#create dataset with verkoopprijzen 2012
 
+verkoopprijzen_2012 <- subset(Maindata, jaar == 2012) 
+
+#filter zodat alleen regio, verkoopprijs en jaar overblijft
+verkoopprijzen_2012$`Beginstand voorraad` <- NULL
+verkoopprijzen_2012$Nieuwbouw <- NULL
+verkoopprijzen_2012$`Eindstand voorraad` <- NULL
+verkoopprijzen_2012$BevolkGrootte <- NULL
+verkoopprijzen_2012$GrowthPercentageBevolking <- NULL
+verkoopprijzen_2012$GrowthPercentageVoorraad <- NULL
+
+#merging gemeentedata met verkoopprijsdata
+verkoopprijs_gemeentes <- gemeente_2024 %>% inner_join(verkoopprijzen_2012, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 
-
-
+ggplot(verkoopprijs_gemeentes, aes(fill = Verkoopprijs)) +
+          geom_sf(color = "white", size = 0.2) +
+          scale_fill_gradient(low = "blue", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house in NL in (€)") 
 
