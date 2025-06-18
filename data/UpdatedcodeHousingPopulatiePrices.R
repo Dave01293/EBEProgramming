@@ -2,15 +2,10 @@ library(tidyverse)
 
 # Read initial data sets
 Aantal_woningen <- read_csv("data/Naamloze spreadsheet - Voorraad_woningen_en_niet_woningen__mutaties__gebruiksfunctie__regio_04062025_144455.csv")
-<<<<<<< HEAD
-
-Verkoopprijzen <- read_csv("data/Bestaande_koopwoningen__gemiddelde_verkoopprijzen__regio_04062025_144458 - Bestaande_koopwoningen__gemiddelde_verkoopprijzen__regio_04062025_144458.csv")
-a=======
 rm(Naamloze_spreadsheet_Voorraad_woningen_en_niet_woningen_mutaties_gebruiksfunctie_regio_04062025_144455)
 
 Verkoopprijzen <- read_csv("data/Bestaande_koopwoningen__gemiddelde_verkoopprijzen__regio_04062025_144458 - Bestaande_koopwoningen__gemiddelde_verkoopprijzen__regio_04062025_144458.csv")
 rm(Naamloze_spreadsheet_Bevolkingsontwikkeling_regio_per_maand_04062025_144448)
->>>>>>> parent of 55557cc (Update UpdatedcodeHousingPopulatiePrices.R)
 
 Bevolkingsgroei <- read_csv("data/Naamloze spreadsheet - Bevolkingsontwikkeling__regio_per_maand_04062025_144448.csv")
 rm(Naamloze_spreadsheet_Bevolkingsontwikkeling_regio_per_maand_04062025_144448)
@@ -51,8 +46,8 @@ df <- full_join(dataframe, Aantal_woningen, by=c("jaar","Regio's"))
 
 #Creating Maindata by removing unnecessary colums from df
 Maindata <- remove_missing(df, na.rm = FALSE,
-                      vars = c("waarde.x", "waarde.y","Beginstand voorraad", "Nieuwbouw", "Eindstand Voorraad"), 
-                      finite = FALSE)
+                           vars = c("waarde.x", "waarde.y","Beginstand voorraad", "Nieuwbouw", "Eindstand Voorraad"), 
+                           finite = FALSE)
 Maindata$Verkoopprijs <- Maindata$waarde.x
 Maindata$BevolkGrootte <- Maindata$waarde.y
 Maindata$waarde.x <- NULL
@@ -74,8 +69,8 @@ ggplot(plotdataAmersfoort, aes(x = jaar, y = Verkoopprijs)) +
   geom_line() +
   geom_vline(xintercept = 2016) +
   scale_y_continuous(
-  breaks = seq(300000, 500000, 100000),    
-  labels = function(x) x / 1000) +
+    breaks = seq(300000, 500000, 100000),    
+    labels = function(x) x / 1000) +
   scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
 
 
@@ -138,8 +133,8 @@ verkoopprijs_gemeentes_2012 <- gemeente_2012 %>% inner_join(verkoopprijzen_2012,
 
 #Creating Heatmap 2012 
 ggplot(verkoopprijs_gemeentes_2012, aes(fill = Verkoopprijs)) +
-          geom_sf(color = "white", size = 0.1) +
-          scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2012(€)") 
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2012(€)") 
 
 #gemeentes in 2016
 gemeente_2016 <- cbs_get_sf("gemeente", 2016)
