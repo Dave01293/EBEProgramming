@@ -56,17 +56,18 @@ Maindata$Onderwerp.x <- NULL
 Maindata$Onderwerp.y <- NULL
 
 #filter per region
-plotdata = Maindata %>% filter(`Regio's` == "Amersfoort")
+plotdataAmersfoort = Maindata %>% filter(`Regio's` == "Amersfoort")
 
 #tijdsvisualisatie
-plotdata$jaar <- as.numeric(plotdata$jaar)
+plotdataAmersfoort$jaar <- as.numeric(plotdataAmersfoort$jaar)
 
-ggplot(plotdata, aes(x = jaar, y = Verkoopprijs)) +
+ggplot(plotdataAmersfoort, aes(x = jaar, y = Verkoopprijs)) +
   geom_point() +
   xlab("Year") +
   ylab("Price in € (x1000)") +
   ggtitle("Housing prices per year (Amersfoort)") +
   geom_line() +
+  geom_vline(xintercept = 2016) +
   scale_y_continuous(
   breaks = seq(300000, 500000, 100000),    
   labels = function(x) x / 1000) +
