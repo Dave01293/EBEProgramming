@@ -44,19 +44,19 @@ dataframe <- full_join(Verkoopprijzen_long, bevolking_long, by=c("jaar", "Regio'
 #Samenvoegen datasets "dataframe" en "Aantal_woningen" tot 1 dataset: "df"
 df <- full_join(dataframe, Aantal_woningen, by=c("jaar","Regio's"))
 
-#Creating df2 by removing unnecessary colums from df
-df2 <- remove_missing(df, na.rm = FALSE,
+#Creating Maindata by removing unnecessary colums from df
+Maindata <- remove_missing(df, na.rm = FALSE,
                       vars = c("waarde.x", "waarde.y","Beginstand voorraad", "Nieuwbouw", "Eindstand Voorraad"), 
                       finite = FALSE)
-df2$Verkoopprijs <- df2$waarde.x
-df2$BevolkGrootte <- df2$waarde.y
-df2$waarde.x <- NULL
-df2$waarde.y <- NULL
-df2$Onderwerp.x <- NULL
-df2$Onderwerp.y <- NULL
+Maindata$Verkoopprijs <- Maindata$waarde.x
+Maindata$BevolkGrootte <- Maindata$waarde.y
+Maindata$waarde.x <- NULL
+Maindata$waarde.y <- NULL
+Maindata$Onderwerp.x <- NULL
+Maindata$Onderwerp.y <- NULL
 
 #filter per region
-plotdata = df2 %>% filter(`Regio's` == "Amersfoort")
+plotdata = Maindata %>% filter(`Regio's` == "Amersfoort")
 
 #tijdsvisualisatie
 plotdata$jaar <- as.numeric(plotdata$jaar)
@@ -73,17 +73,17 @@ ggplot(plotdata, aes(x = jaar, y = Verkoopprijs)) +
   scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
 
 
-#adding variables to df2 
-df2 <- df2 %>%
+#adding variables to Maindata 
+Maindata <- Maindata %>%
   group_by(`Regio's`) %>%
   mutate(GrowthPercentageBevolking = (BevolkGrootte / lag(BevolkGrootte)-1)*100)
 
-df2 <- df2 %>%
+Maindata <- Maindata %>%
   group_by(`Regio's`) %>%
   mutate(GrowthPercentageVoorraad = (`Eindstand voorraad` / lag(`Eindstand voorraad`)-1)*100)
 
 #subgroep analyse
-data2020 <- subset(df2, jaar == 2020)
+data2020 <- subset(Maindata, jaar == 2020)
 
 BevolkMean2020 <- mean(data2020$BevolkGrootte, na.rm = TRUE)
 
@@ -99,6 +99,8 @@ ggplot(data = data2020,
   xlab("Population size") +
   ylab("Growth housing supply in percentage") +
   ggtitle("Housing supply growth per subgroup")
+
+#Creating Heatmap 
 
 
 
