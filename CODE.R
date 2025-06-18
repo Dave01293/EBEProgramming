@@ -204,4 +204,3 @@ verkoopprijs_gemeentes_2024 <- gemeente_2024 %>% inner_join(verkoopprijzen_2024,
 ggplot(verkoopprijs_gemeentes_2024, aes(fill = Verkoopprijs)) +
   geom_sf(color = "white", size = 0.1) +
   scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2024 (€)") 
-#voor Daves moeder
