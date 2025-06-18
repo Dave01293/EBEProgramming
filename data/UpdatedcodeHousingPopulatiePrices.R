@@ -110,7 +110,8 @@ library(cbsodataR)
 library(sf)
 library(ggplot2)
 
-gemeente_2024 <- cbs_get_sf("gemeente", 2024)
+#gemeentes in 2012
+gemeente_2012 <- cbs_get_sf("gemeente", 2012)
 
 #create dataset with verkoopprijzen 2012
 
@@ -125,7 +126,7 @@ verkoopprijzen_2012$GrowthPercentageBevolking <- NULL
 verkoopprijzen_2012$GrowthPercentageVoorraad <- NULL
 
 #merging gemeentedata met verkoopprijsdata
-verkoopprijs_gemeentes <- gemeente_2024 %>% inner_join(verkoopprijzen_2012, by = join_by(statnaam == `Regio's`))
+verkoopprijs_gemeentes <- gemeente_2012 %>% inner_join(verkoopprijzen_2012, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 
 ggplot(verkoopprijs_gemeentes, aes(fill = Verkoopprijs)) +
