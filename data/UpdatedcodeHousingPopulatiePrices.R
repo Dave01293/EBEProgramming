@@ -110,6 +110,9 @@ library(cbsodataR)
 library(sf)
 library(ggplot2)
 
+#extreme verkoopprijs_gemeentes
+minimaleprijs = min(Maindata$Verkoopprijs, na.rm = TRUE)
+maximaleprijs = max(Maindata$Verkoopprijs, na.rm = TRUE)
 #gemeentes in 2012
 gemeente_2012 <- cbs_get_sf("gemeente", 2012)
 
@@ -128,10 +131,10 @@ verkoopprijzen_2012$GrowthPercentageVoorraad <- NULL
 #merging gemeentedata met verkoopprijsdata
 verkoopprijs_gemeentes_2012 <- gemeente_2012 %>% inner_join(verkoopprijzen_2012, by = join_by(statnaam == `Regio's`))
 
-#Creating Heatmap 
+#Creating Heatmap 2012 
 ggplot(verkoopprijs_gemeentes_2012, aes(fill = Verkoopprijs)) +
-          geom_sf(color = "white", size = 0.2) +
-          scale_fill_gradient(low = "blue", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2012(€)") 
+          geom_sf(color = "white", size = 0.1) +
+          scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2012(€)") 
 
 #gemeentes in 2016
 gemeente_2016 <- cbs_get_sf("gemeente", 2016)
@@ -148,18 +151,18 @@ verkoopprijzen_2016$BevolkGrootte <- NULL
 verkoopprijzen_2016$GrowthPercentageBevolking <- NULL
 verkoopprijzen_2016$GrowthPercentageVoorraad <- NULL
 
-#merging gemeentedata met verkoopprijsdata
+#merging gemeentedata met verkoopprijsdata in 2016
 verkoopprijs_gemeentes_2016 <- gemeente_2016 %>% inner_join(verkoopprijzen_2016, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 
 ggplot(verkoopprijs_gemeentes_2016, aes(fill = Verkoopprijs)) +
-  geom_sf(color = "white", size = 0.2) +
-  scale_fill_gradient(low = "blue", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2016 (€)") 
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs),low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2016 (€)") 
 
 #gemeentes in 2020
 gemeente_2020 <- cbs_get_sf("gemeente", 2020)
 
-#create dataset with verkoopprijzen 2016
+#create dataset with verkoopprijzen 2020
 
 verkoopprijzen_2020 <- subset(Maindata, jaar == 2020) 
 
@@ -171,15 +174,33 @@ verkoopprijzen_2020$BevolkGrootte <- NULL
 verkoopprijzen_2020$GrowthPercentageBevolking <- NULL
 verkoopprijzen_2020$GrowthPercentageVoorraad <- NULL
 
-#merging gemeentedata met verkoopprijsdata
+#merging gemeentedata met verkoopprijsdata in 2020
 verkoopprijs_gemeentes_2020 <- gemeente_2020 %>% inner_join(verkoopprijzen_2020, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 
 ggplot(verkoopprijs_gemeentes_2020, aes(fill = Verkoopprijs)) +
-  geom_sf(color = "white", size = 0.2) +
-  scale_fill_gradient(limits = c(150000, 800000), low = "blue", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2020 (€)") 
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2020 (€)") 
 
-#extreme verkoopprijs_gemeentes
-minimaleprijs = min(Maindata$Verkoopprijs, na.rm = TRUE)
-maximaleprijs = max(Maindata$Verkoopprijs, na.rm = TRUE)
+#gemeentes in 2024
+gemeente_2024 <- cbs_get_sf("gemeente", 2024)
 
+#create dataset with verkoopprijzen 2024
+
+verkoopprijzen_2024 <- subset(Maindata, jaar == 2024) 
+
+#filter zodat alleen regio, verkoopprijs en jaar overblijft
+verkoopprijzen_2024$`Beginstand voorraad` <- NULL
+verkoopprijzen_2024$Nieuwbouw <- NULL
+verkoopprijzen_2024$`Eindstand voorraad` <- NULL
+verkoopprijzen_2024$BevolkGrootte <- NULL
+verkoopprijzen_2024$GrowthPercentageBevolking <- NULL
+verkoopprijzen_2024$GrowthPercentageVoorraad <- NULL
+
+#merging gemeentedata met verkoopprijsdata in 2024
+verkoopprijs_gemeentes_2024 <- gemeente_2024 %>% inner_join(verkoopprijzen_2024, by = join_by(statnaam == `Regio's`))
+
+#Creating Heatmap 
+ggplot(verkoopprijs_gemeentes_2024, aes(fill = Verkoopprijs)) +
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2024 (€)") 
