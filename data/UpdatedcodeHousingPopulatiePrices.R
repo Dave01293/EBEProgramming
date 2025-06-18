@@ -103,9 +103,9 @@ ggplot(data = data2020,
 
 
 #install shapefile
-install.packages("cbsodataR")
-install.packages("sf")
-install.packages("ggplot2")
+#install.packages("cbsodataR")
+#install.packages("sf")
+#install.packages("ggplot2")
 library(cbsodataR)
 library(sf)
 library(ggplot2)
@@ -177,6 +177,9 @@ verkoopprijs_gemeentes_2020 <- gemeente_2020 %>% inner_join(verkoopprijzen_2020,
 #Creating Heatmap 
 ggplot(verkoopprijs_gemeentes_2020, aes(fill = Verkoopprijs)) +
   geom_sf(color = "white", size = 0.2) +
-  scale_fill_gradient(low = "blue", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2020 (€)") 
+  scale_fill_gradient(limits = c(150000, 800000), low = "blue", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2020 (€)") 
 
+#extreme verkoopprijs_gemeentes
+minimaleprijs = min(Maindata$Verkoopprijs, na.rm = TRUE)
+maximaleprijs = max(Maindata$Verkoopprijs, na.rm = TRUE)
 
