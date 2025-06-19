@@ -273,3 +273,19 @@ Weighted_mean_houseprices$jaar.y = NULL
 Weighted_mean_houseprices$geometry = NULL
 Weighted_mean_houseprices$Verkoopprijs = NULL
 Weighted_mean_houseprices = Weighted_mean_houseprices %>% rename(jaar = jaar.x)
+
+#zorgen dat jaar wordt behandeld als numeric
+Weighted_mean_houseprices$jaar <- as.numeric(Weighted_mean_houseprices$jaar)
+
+#plotten van gemiddelde huisprijs
+ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
+  geom_point() +
+  xlab("Year") +
+  ylab("Price in € (x1000)") +
+  ggtitle("Weighted mean houseprice in the Netherlands per year") +
+  geom_line() +
+  geom_vline(xintercept = 2016) +
+  scale_y_continuous(
+    breaks = seq(300000, 500000, 100000),    
+    labels = function(x) x / 1000) +
+  scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
