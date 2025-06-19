@@ -113,6 +113,8 @@ library(ggplot2)
 #extreme verkoopprijs_gemeentes
 minimaleprijs = min(Maindata$Verkoopprijs, na.rm = TRUE)
 maximaleprijs = max(Maindata$Verkoopprijs, na.rm = TRUE)
+
+##########Heatmap Netherlands average salesprice house in 2012###########
 #gemeentes in 2012
 gemeente_2012 <- cbs_get_sf("gemeente", 2012)
 
@@ -136,6 +138,7 @@ ggplot(verkoopprijs_gemeentes_2012, aes(fill = Verkoopprijs)) +
   geom_sf(color = "white", size = 0.1) +
   scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2012(€)") 
 
+##########Heatmap Netherlands average salesprice house in 2016###########
 #gemeentes in 2016
 gemeente_2016 <- cbs_get_sf("gemeente", 2016)
 
@@ -159,6 +162,7 @@ ggplot(verkoopprijs_gemeentes_2016, aes(fill = Verkoopprijs)) +
   geom_sf(color = "white", size = 0.1) +
   scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs),low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2016 (€)") 
 
+##########Heatmap Netherlands average salesprice house in 2020###########
 #gemeentes in 2020
 gemeente_2020 <- cbs_get_sf("gemeente", 2020)
 
@@ -182,6 +186,7 @@ ggplot(verkoopprijs_gemeentes_2020, aes(fill = Verkoopprijs)) +
   geom_sf(color = "white", size = 0.1) +
   scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2020 (€)") 
 
+##########Heatmap Netherlands average salesprice house in 2024###########
 #gemeentes in 2024
 gemeente_2024 <- cbs_get_sf("gemeente", 2024)
 
@@ -204,3 +209,53 @@ verkoopprijs_gemeentes_2024 <- gemeente_2024 %>% inner_join(verkoopprijzen_2024,
 ggplot(verkoopprijs_gemeentes_2024, aes(fill = Verkoopprijs)) +
   geom_sf(color = "white", size = 0.1) +
   scale_fill_gradient(limits = c(minimaleprijs, maximaleprijs), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2024 (€)") 
+
+###########Time visualization weighted average houseprice in 2012#############
+#woningen gefilterd op 2012
+Eind_voorraad_woningen_2012 <- subset (Aantal_woningen, jaar == 2012)
+
+#filter zodat alleen eind voorraad overblijft
+Eind_voorraad_woningen_2012$`Beginstand voorraad`<- NULL
+Eind_voorraad_woningen_2012$Nieuwbouw <- NULL
+
+Eind_voorraad_woningen_2012 <- inner_join(Eind_voorraad_woningen_2012, verkoopprijs_gemeentes_2012, by = join_by(`Regio's` == statnaam))
+#weighted average 
+Eind_voorraad_woningen_2012$weighted_mean_salesprice_2012 = weighted.mean(Eind_voorraad_woningen_2012$Verkoopprijs , Eind_voorraad_woningen_2012$`Eindstand voorraad`, na.rm = T)
+
+
+###########Time visualization weighted average houseprice in 2016#############
+#woningen gefilterd op 2016
+Eind_voorraad_woningen_2016 <- subset (Aantal_woningen, jaar == 2016)
+
+#filter zodat alleen eind voorraad overblijft
+Eind_voorraad_woningen_2016$`Beginstand voorraad`<- NULL
+Eind_voorraad_woningen_2016$Nieuwbouw <- NULL
+
+Eind_voorraad_woningen_2016 <- inner_join(Eind_voorraad_woningen_2016, verkoopprijs_gemeentes_2016, by = join_by(`Regio's` == statnaam))
+#weighted average 
+Eind_voorraad_woningen_2016$weighted_mean_salesprice_2016 = weighted.mean(Eind_voorraad_woningen_2016$Verkoopprijs , Eind_voorraad_woningen_2016$`Eindstand voorraad`, na.rm = T)
+
+###########Time visualization weighted average houseprice in 2020#############
+#woningen gefilterd op 2020
+Eind_voorraad_woningen_2020 <- subset (Aantal_woningen, jaar == 2020)
+
+#filter zodat alleen eind voorraad overblijft
+Eind_voorraad_woningen_2020$`Beginstand voorraad`<- NULL
+Eind_voorraad_woningen_2020$Nieuwbouw <- NULL
+
+Eind_voorraad_woningen_2020 <- inner_join(Eind_voorraad_woningen_2020, verkoopprijs_gemeentes_2020, by = join_by(`Regio's` == statnaam))
+#weighted average 
+Eind_voorraad_woningen_2020$weighted_mean_salesprice_2020 = weighted.mean(Eind_voorraad_woningen_2020$Verkoopprijs , Eind_voorraad_woningen_2020$`Eindstand voorraad`, na.rm = T)
+
+###########Time visualization weighted average houseprice in 2024#############
+#woningen gefilterd op 2024
+Eind_voorraad_woningen_2024 <- subset (Aantal_woningen, jaar == 2024)
+
+#filter zodat alleen eind voorraad overblijft
+Eind_voorraad_woningen_2024$`Beginstand voorraad`<- NULL
+Eind_voorraad_woningen_2024$Nieuwbouw <- NULL
+
+Eind_voorraad_woningen_2024 <- inner_join(Eind_voorraad_woningen_2024, verkoopprijs_gemeentes_2024, by = join_by(`Regio's` == statnaam))
+#weighted average 
+Eind_voorraad_woningen_2024$weighted_mean_salesprice_2024 = weighted.mean(Eind_voorraad_woningen_2024$Verkoopprijs , Eind_voorraad_woningen_2024$`Eindstand voorraad`, na.rm = T)
+
