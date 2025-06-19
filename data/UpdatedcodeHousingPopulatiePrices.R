@@ -220,7 +220,7 @@ Eind_voorraad_woningen_2012$Nieuwbouw <- NULL
 
 Eind_voorraad_woningen_2012 <- inner_join(Eind_voorraad_woningen_2012, verkoopprijs_gemeentes_2012, by = join_by(`Regio's` == statnaam))
 #weighted average 
-Eind_voorraad_woningen_2012$weighted_mean_salesprice_2012 = weighted.mean(Eind_voorraad_woningen_2012$Verkoopprijs , Eind_voorraad_woningen_2012$`Eindstand voorraad`, na.rm = T)
+Eind_voorraad_woningen_2012$weighted_mean_salesprice = weighted.mean(Eind_voorraad_woningen_2012$Verkoopprijs , Eind_voorraad_woningen_2012$`Eindstand voorraad`, na.rm = T)
 
 
 ###########Time visualization weighted average houseprice in 2016#############
@@ -233,7 +233,7 @@ Eind_voorraad_woningen_2016$Nieuwbouw <- NULL
 
 Eind_voorraad_woningen_2016 <- inner_join(Eind_voorraad_woningen_2016, verkoopprijs_gemeentes_2016, by = join_by(`Regio's` == statnaam))
 #weighted average 
-Eind_voorraad_woningen_2016$weighted_mean_salesprice_2016 = weighted.mean(Eind_voorraad_woningen_2016$Verkoopprijs , Eind_voorraad_woningen_2016$`Eindstand voorraad`, na.rm = T)
+Eind_voorraad_woningen_2016$weighted_mean_salesprice = weighted.mean(Eind_voorraad_woningen_2016$Verkoopprijs , Eind_voorraad_woningen_2016$`Eindstand voorraad`, na.rm = T)
 
 ###########Time visualization weighted average houseprice in 2020#############
 #woningen gefilterd op 2020
@@ -245,7 +245,7 @@ Eind_voorraad_woningen_2020$Nieuwbouw <- NULL
 
 Eind_voorraad_woningen_2020 <- inner_join(Eind_voorraad_woningen_2020, verkoopprijs_gemeentes_2020, by = join_by(`Regio's` == statnaam))
 #weighted average 
-Eind_voorraad_woningen_2020$weighted_mean_salesprice_2020 = weighted.mean(Eind_voorraad_woningen_2020$Verkoopprijs , Eind_voorraad_woningen_2020$`Eindstand voorraad`, na.rm = T)
+Eind_voorraad_woningen_2020$weighted_mean_salesprice = weighted.mean(Eind_voorraad_woningen_2020$Verkoopprijs , Eind_voorraad_woningen_2020$`Eindstand voorraad`, na.rm = T)
 
 ###########Time visualization weighted average houseprice in 2024#############
 #woningen gefilterd op 2024
@@ -257,5 +257,19 @@ Eind_voorraad_woningen_2024$Nieuwbouw <- NULL
 
 Eind_voorraad_woningen_2024 <- inner_join(Eind_voorraad_woningen_2024, verkoopprijs_gemeentes_2024, by = join_by(`Regio's` == statnaam))
 #weighted average 
-Eind_voorraad_woningen_2024$weighted_mean_salesprice_2024 = weighted.mean(Eind_voorraad_woningen_2024$Verkoopprijs , Eind_voorraad_woningen_2024$`Eindstand voorraad`, na.rm = T)
+Eind_voorraad_woningen_2024$weighted_mean_salesprice = weighted.mean(Eind_voorraad_woningen_2024$Verkoopprijs , Eind_voorraad_woningen_2024$`Eindstand voorraad`, na.rm = T)
 
+Eind_voorraad_woningen <-  Eind_voorraad_woningen_2012 
+Eind_voorraad_woningen = rbind(Eind_voorraad_woningen, Eind_voorraad_woningen_2016)
+Eind_voorraad_woningen = rbind(Eind_voorraad_woningen, Eind_voorraad_woningen_2020)
+Eind_voorraad_woningen = rbind(Eind_voorraad_woningen, Eind_voorraad_woningen_2024)
+
+Weighted_mean_houseprices = Eind_voorraad_woningen %>% filter(`Regio's` == "Amersfoort")
+   
+Weighted_mean_houseprices$`Regio's` = NULL
+Weighted_mean_houseprices$`Eindstand voorraad`= NULL
+Weighted_mean_houseprices$statcode = NULL
+Weighted_mean_houseprices$jaar.y = NULL
+Weighted_mean_houseprices$geometry = NULL
+Weighted_mean_houseprices$Verkoopprijs = NULL
+Weighted_mean_houseprices = Weighted_mean_houseprices %>% rename(jaar = jaar.x)
