@@ -285,6 +285,7 @@ ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
   ggtitle("Weighted mean houseprice in the Netherlands per year") +
   geom_line() +
   geom_vline(xintercept = 2016) +
+  annotate("text", x = 2018, y = 400000, size = 4, label = "\nDecline in mortgage\n interest rates") +
   scale_y_continuous(
     breaks = seq(300000, 500000, 100000),    
     labels = function(x) x / 1000) +
