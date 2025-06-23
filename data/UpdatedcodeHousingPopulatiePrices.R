@@ -123,12 +123,8 @@ gemeente_2012 <- cbs_get_sf("gemeente", 2012)
 verkoopprijzen_2012 <- subset(Maindata, jaar == 2012) 
 
 #filter zodat alleen regio, verkoopprijs en jaar overblijft
-verkoopprijzen_2012$`Beginstand voorraad` <- NULL
-verkoopprijzen_2012$Nieuwbouw <- NULL
-verkoopprijzen_2012$`Eindstand voorraad` <- NULL
-verkoopprijzen_2012$BevolkGrootte <- NULL
-verkoopprijzen_2012$GrowthPercentageBevolking <- NULL
-verkoopprijzen_2012$GrowthPercentageVoorraad <- NULL
+verkoopprijzen_2012 <- verkoopprijzen_2012 %>%
+  select(`Regio's`, jaar, Verkoopprijs)
 
 #merging gemeentedata met verkoopprijsdata
 verkoopprijs_gemeentes_2012 <- gemeente_2012 %>% inner_join(verkoopprijzen_2012, by = join_by(statnaam == `Regio's`))
@@ -147,12 +143,8 @@ gemeente_2016 <- cbs_get_sf("gemeente", 2016)
 verkoopprijzen_2016 <- subset(Maindata, jaar == 2016) 
 
 #filter zodat alleen regio, verkoopprijs en jaar overblijft
-verkoopprijzen_2016$`Beginstand voorraad` <- NULL
-verkoopprijzen_2016$Nieuwbouw <- NULL
-verkoopprijzen_2016$`Eindstand voorraad` <- NULL
-verkoopprijzen_2016$BevolkGrootte <- NULL
-verkoopprijzen_2016$GrowthPercentageBevolking <- NULL
-verkoopprijzen_2016$GrowthPercentageVoorraad <- NULL
+verkoopprijzen_2016 <- verkoopprijzen_2016 %>%
+  select(`Regio's`, jaar, Verkoopprijs)
 
 #merging gemeentedata met verkoopprijsdata in 2016
 verkoopprijs_gemeentes_2016 <- gemeente_2016 %>% inner_join(verkoopprijzen_2016, by = join_by(statnaam == `Regio's`))
@@ -171,12 +163,8 @@ gemeente_2020 <- cbs_get_sf("gemeente", 2020)
 verkoopprijzen_2020 <- subset(Maindata, jaar == 2020) 
 
 #filter zodat alleen regio, verkoopprijs en jaar overblijft
-verkoopprijzen_2020$`Beginstand voorraad` <- NULL
-verkoopprijzen_2020$Nieuwbouw <- NULL
-verkoopprijzen_2020$`Eindstand voorraad` <- NULL
-verkoopprijzen_2020$BevolkGrootte <- NULL
-verkoopprijzen_2020$GrowthPercentageBevolking <- NULL
-verkoopprijzen_2020$GrowthPercentageVoorraad <- NULL
+verkoopprijzen_2020 <- verkoopprijzen_2020 %>%
+  select(`Regio's`, jaar, Verkoopprijs)
 
 #merging gemeentedata met verkoopprijsdata in 2020
 verkoopprijs_gemeentes_2020 <- gemeente_2020 %>% inner_join(verkoopprijzen_2020, by = join_by(statnaam == `Regio's`))
@@ -195,12 +183,8 @@ gemeente_2024 <- cbs_get_sf("gemeente", 2024)
 verkoopprijzen_2024 <- subset(Maindata, jaar == 2024) 
 
 #filter zodat alleen regio, verkoopprijs en jaar overblijft
-verkoopprijzen_2024$`Beginstand voorraad` <- NULL
-verkoopprijzen_2024$Nieuwbouw <- NULL
-verkoopprijzen_2024$`Eindstand voorraad` <- NULL
-verkoopprijzen_2024$BevolkGrootte <- NULL
-verkoopprijzen_2024$GrowthPercentageBevolking <- NULL
-verkoopprijzen_2024$GrowthPercentageVoorraad <- NULL
+verkoopprijzen_2024 <- verkoopprijzen_2024 %>%
+  select(`Regio's`, jaar, Verkoopprijs)
 
 #merging gemeentedata met verkoopprijsdata in 2024
 verkoopprijs_gemeentes_2024 <- gemeente_2024 %>% inner_join(verkoopprijzen_2024, by = join_by(statnaam == `Regio's`))
