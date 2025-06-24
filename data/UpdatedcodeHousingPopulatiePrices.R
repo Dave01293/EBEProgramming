@@ -11,7 +11,7 @@ populationgrowth <- read_csv("data/bevolkingsontwikkeling_per_jaar.csv")
 
 require(tidyverse)
 
-#population data wide naar long
+#population data wide to long
 
 population_long <- populationgrowth %>%
   pivot_longer(
@@ -20,7 +20,7 @@ population_long <- populationgrowth %>%
     values_to = "waarde"
   )
 
-# saleprice_houses wide naar long
+# saleprice_houses wide to long
 
 saleprice_houses_long <- saleprice_houses %>%
   pivot_longer(
@@ -34,10 +34,10 @@ number_of_houses <- number_of_houses %>%
 
 number_of_houses$jaar <- as.character(number_of_houses$jaar)
 
-#Samenvoegen datasets "saleprice_houses_long" en "population_long" tot 1 dataset: "dataframe"
+#merging datasets "saleprice_houses_long" and "population_long" into 1 dataset: "dataframe"
 dataframe <- full_join(saleprice_houses_long, population_long, by=c("jaar", "Regio's"))
 
-#Samenvoegen datasets "dataframe" en "number_of_houses" tot 1 dataset: "df"
+#merging datasets "dataframe" and "number_of_houses" into 1 dataset: "df"
 df <- full_join(dataframe, number_of_houses, by=c("jaar","Regio's"))
 
 #Creating Maindata by removing unnecessary colums from df
@@ -60,7 +60,7 @@ Maindata <- Maindata %>%
   group_by(`Regio's`) %>%
   mutate(GrowthPercentagesupply = (`Eindstand voorraad` / lag(`Eindstand voorraad`)-1)*100)
 
-#subgroep analyse
+#subgroup analyse
 data2020 <- subset(Maindata, jaar == 2020)
 
 BevolkMean2020 <- mean(data2020$BevolkGrootte, na.rm = TRUE)
@@ -74,7 +74,7 @@ data2020$Groottepopulation <- data2020$Groottepopulation %>%
 ggplot(data = data2020, 
        aes(x = Groottepopulation, y = GrowthPercentagesupply)) +
   geom_boxplot() +
-  xlab("Population size") +
+  xlab("population size") +
   ylab("Growth housing supply in percentage") +
   ggtitle("Housing supply growth per subgroup")
 
@@ -99,11 +99,11 @@ municipality_2012 <- cbs_get_sf("gemeente", 2012)
 
 saleprice_houses_2012 <- subset(Maindata, jaar == 2012) 
 
-#filter zodat alleen regio, saleprice en jaar overblijft
+#filter dataset, region, saleprice and year remains
 saleprice_houses_2012 <- saleprice_houses_2012 %>%
   select(`Regio's`, jaar, saleprice)
 
-#merging gemeentedata met salepricedata
+#merging municipalitydata with salepricedata
 saleprice_municipality_2012 <- municipality_2012 %>% inner_join(saleprice_houses_2012, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 2012 
@@ -119,11 +119,11 @@ municipality_2016 <- cbs_get_sf("gemeente", 2016)
 
 saleprice_houses_2016 <- subset(Maindata, jaar == 2016) 
 
-#filter zodat alleen regio, saleprice en jaar overblijft
+#filter ensuring only region, saleprice and year remains
 saleprice_houses_2016 <- saleprice_houses_2016 %>%
   select(`Regio's`, jaar, saleprice)
 
-#merging gemeentedata met salepricedata in 2016
+#merging municipalitydata with salepricedata in 2016
 saleprice_municipality_2016 <- municipality_2016 %>% inner_join(saleprice_houses_2016, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 
@@ -139,11 +139,11 @@ municipality_2020 <- cbs_get_sf("gemeente", 2020)
 
 saleprice_houses_2020 <- subset(Maindata, jaar == 2020) 
 
-#filter zodat alleen regio, saleprice en jaar overblijft
+#filter ensuring only region, saleprice and year remains
 saleprice_houses_2020 <- saleprice_houses_2020 %>%
   select(`Regio's`, jaar, saleprice)
 
-#merging gemeentedata met salepricedata in 2020
+#merging municipalitydata with salepricedata in 2020
 saleprice_municipality_2020 <- municipality_2020 %>% inner_join(saleprice_houses_2020, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 
@@ -159,11 +159,11 @@ municipality_2024 <- cbs_get_sf("gemeente", 2024)
 
 saleprice_houses_2024 <- subset(Maindata, jaar == 2024) 
 
-#filter zodat alleen regio, saleprice en jaar overblijft
+#filter ensuring only region, saleprice and year remains
 saleprice_houses_2024 <- saleprice_houses_2024 %>%
   select(`Regio's`, jaar, saleprice)
 
-#merging gemeentedata met salepricedata in 2024
+#merging municipalitydata with salepricedata in 2024
 saleprice_municipality_2024 <- municipality_2024 %>% inner_join(saleprice_houses_2024, by = join_by(statnaam == `Regio's`))
 
 #Creating Heatmap 
@@ -172,10 +172,10 @@ ggplot(saleprice_municipality_2024, aes(fill = saleprice)) +
   scale_fill_gradient(limits = c(minimumprice, maximumprice), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2024 (€)") 
 
 ###########Time visualization weighted average houseprice in 2012#############
-#houses gefilterd op 2012
+#houses filtered on 2012
 end_of_year_supply_houses_2012 <- subset (number_of_houses, jaar == 2012)
 
-#filter zodat alleen end_of_yearsupply overblijft
+#filter ensuring only end_of_yearsupply remains
 end_of_year_supply_houses_2012$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2012$newly_built_housing <- NULL
 
@@ -185,10 +185,10 @@ end_of_year_supply_houses_2012$weighted_mean_salesprice = weighted.mean(end_of_y
 
 
 ###########Time visualization weighted average houseprice in 2016#############
-#houses gefilterd op 2016
+#houses filtered on 2016
 end_of_year_supply_houses_2016 <- subset (number_of_houses, jaar == 2016)
 
-#filter zodat alleen end_of_year supply overblijft
+#filter ensuring only end_of_year supply remains
 end_of_year_supply_houses_2016$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2016$newly_built_housing <- NULL
 
@@ -197,10 +197,10 @@ end_of_year_supply_houses_2016 <- inner_join(end_of_year_supply_houses_2016, sal
 end_of_year_supply_houses_2016$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2016$saleprice , end_of_year_supply_houses_2016$`Eindstand voorraad`, na.rm = T)
 
 ###########Time visualization weighted average houseprice in 2020#############
-#houses gefilterd op 2020
+#houses filtered on 2020
 end_of_year_supply_houses_2020 <- subset (number_of_houses, jaar == 2020)
 
-#filter zodat alleen end_of_year supply overblijft
+#filter ensuring only end_of_year supply remains
 end_of_year_supply_houses_2020$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2020$newly_built_housing <- NULL
 
@@ -209,10 +209,10 @@ end_of_year_supply_houses_2020 <- inner_join(end_of_year_supply_houses_2020, sal
 end_of_year_supply_houses_2020$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2020$saleprice , end_of_year_supply_houses_2020$`Eindstand voorraad`, na.rm = T)
 
 ###########Time visualization weighted average houseprice in 2024#############
-#houses gefilterd op 2024
+#houses filtered on 2024
 end_of_year_supply_houses_2024 <- subset (number_of_houses, jaar == 2024)
 
-#filter zodat alleen end_of_year supply overblijft
+#filter ensuring only end_of_year supply remains
 end_of_year_supply_houses_2024$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2024$newly_built_housing <- NULL
 
@@ -225,18 +225,18 @@ end_of_year_supply_houses = rbind(end_of_year_supply_houses, end_of_year_supply_
 end_of_year_supply_houses = rbind(end_of_year_supply_houses, end_of_year_supply_houses_2020)
 end_of_year_supply_houses = rbind(end_of_year_supply_houses, end_of_year_supply_houses_2024)
 
-###filter zodat er maar 1 regio overblijft
+###filter ensuring only 1 region remains
 Weighted_mean_houseprices = end_of_year_supply_houses %>% filter(`Regio's` == "Amersfoort")
 
-###filter zodat er alleen het gewogen gemiddelde saleprice overblijft
+###filterensuring only Weighted_mean_houseprices remains
 Weighted_mean_houseprices = Weighted_mean_houseprices %>%
   select(jaar.x, weighted_mean_salesprice)
 Weighted_mean_houseprices = Weighted_mean_houseprices %>% rename(jaar = jaar.x)
 
-#zorgen dat jaar wordt behandeld als numeric
+#ensuring year will be treated as numeric
 Weighted_mean_houseprices$jaar <- as.numeric(Weighted_mean_houseprices$jaar)
 
-#plotten van gemiddelde huisprijs
+#making a plot of Weighted_mean_houseprices
 ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
   geom_point() +
   xlab("Year") +
