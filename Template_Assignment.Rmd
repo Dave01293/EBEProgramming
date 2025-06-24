@@ -23,23 +23,24 @@ library(ggplot2)
 
 # Quantifying a Social Problem: The Dutch Housing Crisis
 
-Include your names
+Matthijs Baars -
 
-Include the tutorial group number
+Sem Klinge - 2826057
 
-Include your tutorial lecturer's name
+Huub de Jong - 2852204
 
-# Part 1 - Identify a Social Problem
+Dave van den Berg - 2861451
 
-Use APA referencing throughout your document.
+Ellen Schutte -
 
-## 1.1 Describe the Social Problem
+Mathijs Baartscheer - 2863507
 
-Include the following:
+**Problem Motivation & Literature:**
 
--   Why is this relevant?
+The rise in housing prices is a social problem because it limits access to affordable homes, especially for low- and middle-income groups. This deepens inequality and turns housing from a basic need into a source of financial stress. Ensuring fair access to housing is essential for social stability and well-being. Rising housing prices have been described as a social problem by Dutch sources like CBS, Rijksoverheid, NOS, DNB (De Nederlandsche Bank), StatLine, and Statista (CBS, 2024a; CBS, 2024b; DNB, n.d.; NOS, 2023; Rijksoverheid, 2023; Statista, n.d.). They point out that more and more people are struggling to find affordable housing, especially younger people and families. The shortage of homes and the growing gap between income and housing costs are making it harder for people to live where they work or grew up, which creates social pressure.
 
--   ...
+\
+There are aspects of the rising house prices that haven’t been fully studied yet. For example, we don’t really know how it affects people’s mental health over time or how it changes the way communities stick together. Also, with more people working from home now, it’s not clear yet how that will change where people want to live. Our report provides new information by creating new variables describing the correlation between the population growth, the amount of houses on the market, and how they influence the average prices of the owner-occupied houses.
 
 # Part 2 - Data Sourcing
 
@@ -63,19 +64,17 @@ midwest is an example dataset included in the tidyverse package
 head(dataset)
 ```
 
-In this case we see 28 variables, but we miss some information on what units they are in. We also don't know anything about the year/moment in which this data has been captured.
+**Data Sourcing & Description**
 
-These are things that are usually included in the metadata of the dataset. For your project, you need to provide us with the information from your metadata that we need to understand your dataset of choice.
+Our main source for relevant data is going to be the Centraal Bureau voor de Statistiek (CBS, 2024a). The CBS is an independent public body of the Dutch government, making it a credible source for our data. It publishes European statistics covering all sorts of data. The data we are going to use will be of the years 2012, 2016, 2020, and 2024. The three datasets we will be using for our project are the total population growth in the Netherlands, the total amount of houses available on the market in the Netherlands, and the average price of houses in the Netherlands. Total population growth refers to the increase/decrease in population in the Netherlands, including immigration and students. The total amount of houses available will refer to the number of houses that are meant to be lived in (no office spaces or public buildings). This does not include rental houses, since they are not owner-occupied.
 
-## 2.3 Describe the type of variables included
+\
+Total population and total amount of houses available on the market are directly related to each other in the way that with more population growth, the total amount of houses on the market should increase. This, in turn, correlates to our third dataset—average price of houses (CBS, 2024a; CBS, 2024b). When a shift in the amount of houses on the market occurs, a shift in the average price is to be expected.
 
-Think of things like:
+This data is relevant for researching our topic because it shows how much influence the growth of our population has on the market price and whether the market price has increased more or less than expected from our population growth. We can infer from this outcome whether our social problem—the rising housing prices—is related to population growth and whether the problem is worsening.
 
--   Do the variables contain health information or SES information?
-
--   Have they been measured by interviewing individuals or is the data coming from administrative sources?
-
-*For the sake of this example, I will continue with the assignment...*
+\
+Limitations to our data include that we are not looking at whether all the houses on the market have been bought up or not. This means that when, for example, only the cheaper houses are being purchased or at least a larger percentage of them, the average price will drop. It may not be a significant number, but it is a limitation. We are also not including inflation, which means that the rise in average house price will probably be higher than what can be concluded from the population growth.
 
 # Part 3 - Quantifying
 
@@ -88,6 +87,12 @@ mean(dataset$percollege)
 ```
 
 Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
+
+**Data Cleaning**
+
+We combined the data sets of population growth, the number of owner-occupied houses, and the average value of the owner-occupied house. The parts that were overlapping were the years and the regions. We merged these so that the data was not going to be repeated in our document.\
+For some years, we did not have all the data at our disposal. In an ideal world, we would have had every bit of data for every year, so that we could have been more accurate.\
+We had to use the data for the number of local authorities from the year 2012 because multiple fusions had happened since then. This also meant that some of the data we obtained was not usable because of the fusions.
 
 ## 3.2 Generate necessary variables
 
@@ -103,6 +108,12 @@ Variable 2
 
 ```
 
+**Creation of new variables**
+
+We used the variables *beginvoorraad* (starting inventory) and *eindvoorraad* (ending inventory) to create a new variable: “growth percentage voorraad.” By combining these two variables, we could determine the percentual increase or decrease in inventory among the big cities in the Netherlands. This allowed us to compare differences across the years 2012, 2016, 2020, and 2024. The results showed that in certain regions, inventory levels continuously increased, while in others, there was only a decline.\
+We also used the variables *bevolkingsgroei* (total population increase) and *bevolkingsdaling* (total population decrease) to create the variable “growth percentage bevolking,” meaning the percentual difference in population between time periods. With the variables we created, we can now find the relation between the differences in population, the number of houses on the market, and the average price for an owner-occupied house.\
+For the next variable, “growth percentage in housing supply,” we used the sub-variable *bevolkingsgrootte* (population size). We took the population size from the second period, divided it by the population size from the first period, subtracted 1, and multiplied the result by 100. This calculation gave us a plot that showed the growth in housing supply for both small and large population sizes (CBS, 2024a; CBS, 2024b).
+
 ## 3.3 Visualize temporal variation
 
 ```{r}
@@ -116,6 +127,16 @@ Variable 2
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
+
+**Visualization of spatial- and temporal visualization**
+
+When looking at the heatmap we have created, we can see that in 2012 the average prices across the whole of the Netherlands were significantly lower than they were in 2024. From 2012 to 2016 the price increases were mostly centred around the ‘Randstad’. The Randstad is used to refer to an ring shaped area which is more densely populated because of four larger sized cities near each other in the Netherlands. Those cities are Utrecht, Den Hague, Rotterdam and finally Amsterdam. It is commonly known that there is a high demand for housing in the Randstad for years now and this can also be concluded from our map.
+
+Throughout the years the map becomes more and more red, clearly indicating that the average price is going up. From 2016 up on till 2020 we can see that, especially around the big cities, prices are rising. The difference with 2012-2016 though is that the rest of the country is also slowly starting to follow this trend.
+
+The most notable difference between our time periods takes place in the period between 2020 and 2024. The map is now more covered in red than in blue, showing that the rise in average is now really influencing the rest of the country as well. Some parts around the big cities even hit a bright red colour.
+
+We can conclude from our map that the housing prices are rising at a rapid rate, especially around more densely populated area’s. This follows up with our social problem that less people can afford to buy a house or buy a house later on in their lives.
 
 ## 3.5 Visualize sub-population variation
 
@@ -137,7 +158,7 @@ ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
   )
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+This plot further helps understand why the rise in average house prices is higher in the more urban areas than in the suburban parts of the Netherlands. The growth in housing supply in percentages is clearly lower in the larger population sized local authorities than in the smaller ones. Less housing supply growth will eventually mean higher prices, since the demand will rise with less supply. Especially so in the bigger cities where most of the jobs will be centralized.
 
 ## 3.6 Event analysis
 
@@ -147,11 +168,18 @@ Analyze the relationship between two variables.
 
 ```
 
-Here you provide a description of why the plot above is relevant to your specific social problem.
+**Event Analysis**
 
-# Part 4 - Discussion
+Looking at our plot, we observe a significant increase in housing prices from 2016 to 2020. Several factors influence the housing market, including mortgage interest rates, consumer confidence, and employment levels. According to De Nederlandsche Bank, mortgage interest rates steadily declined from 2010 to 2020 (DNB, n.d.). Notably, there was a sharper drop in interest rates between 2015 and 2020.
 
-## 4.1 Discuss your findings
+\
+This decline made mortgages more affordable, encouraging people to transition from renting to buying homes. As a result, the supply of available houses decreased, leading to upward pressure on prices.\
+During the 2020–2024 period, interest rates continued to fall at a similar pace as in the previous period. Consequently, housing prices followed a comparable upward trend. Additionally, by introducing our new variable “Growth Percentage Voorraad,” we observed that housing inventory declined relative to the earlier period. This further reduction in available homes contributed to the continued increase in prices.\
+Based on our analysis and supporting sources, we can conclude that declining mortgage rates and a shrinking housing supply were key drivers behind the rising housing prices (CBS, 2024a; DNB, n.d.; NOS, 2023; Rijksoverheid, 2023).
+
+## **Discussion**
+
+By plotting the line on the Y-axis, which represents housing prices over time, we could clearly observe a fast increase beginning in 2016. This visual representation helps us identify and confirm key turning points in the market. The plot not only highlights the timing of the surge in prices but also allows us to quantify the change showing that housing prices nearly doubled from that year onward. This visual evidence strengthens our event analysis by directly linking observed trends to economic developments. It allows us to contextualize the impact of falling mortgage interest rates and housing supply shortages within the broader timeline of price evolution. In this way, the Y-axis plot acts as a foundation for understanding the dynamics discussed in our analysis.
 
 # Part 5 - Reproducibility
 
@@ -159,6 +187,20 @@ Here you provide a description of why the plot above is relevant to your specifi
 
 Provide the link to your PUBLIC repository here: ...
 
-## 5.2 Reference list
+**References list**
 
-Use APA referencing throughout your document.
+Centraal Bureau voor de Statistiek. (2024a). Bestaande koopwoningen; gemiddelde verkoopprijzen, regio. StatLine.[ https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb\
+](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb) (Continuously updated dataset)
+
+Centraal Bureau voor de Statistiek. (2024b). Bevolking; kerncijfers. StatLine.[ https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table\
+](https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table) (Continuously updated dataset)
+
+De Nederlandsche Bank. (n.d.). Rente \| Dashboard.[ https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/\
+](https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/) (Continuously updated resource)
+
+NOS. (2023, November 11). Schreeuwend tekort aan woningen en hoge huizenprijzen: hoe is het zo gekomen?[ https://nos.nl/collectie/13960/artikel/2497415-schreeuwend-tekort-aan-woningen-en-hoge-huizenprijzen-hoe-is-het-zo-gekomen](https://nos.nl/collectie/13960/artikel/2497415-schreeuwend-tekort-aan-woningen-en-hoge-huizenprijzen-hoe-is-het-zo-gekomen)
+
+Rijksoverheid. (2023, July 24). 900.000 nieuwe woningen om aan groeiende vraag te voldoen. <https://www.rijksoverheid.nl/onderwerpen/volkshuisvesting-en-ruimte>
+
+Statista. (n.d.). Residential real estate in the Benelux.[ https://www.statista.com/topics/4265/residential-real-estate-in-the-benelux/#topicOverview\
+](https://www.statista.com/topics/4265/residential-real-estate-in-the-benelux/#topicOverview) (Continuously updated topic page)
