@@ -339,7 +339,7 @@ ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
 
 ```
 
-The graph
+The graph illustrates a sharp rise in the weighted average house prices in the Netherlands from 2012 to 2024, highlighting a broader social issue. The relatively modest increase between 2012 and 2016 contrasts with the steep climb seen afterward, which aligns with a period of declining mortgage interest rates. Lower borrowing costs likely made it easier for people to buy homes, increasing demand and pushing prices higher. This trend reflects the growing unaffordability of housing in the Netherlands, especially for lower- and middle-income groups, and underscores the urgent need for policies that address both housing supply and financial accessibility.
 
 ## 3.4 Visualize spatial variation
 
