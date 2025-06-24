@@ -35,13 +35,13 @@ number_of_houses <- number_of_houses %>%
 number_of_houses$jaar <- as.character(number_of_houses$jaar)
 
 #merging datasets "saleprice_houses_long" and "population_long" into 1 dataset: "dataframe"
-dataframe <- full_join(saleprice_houses_long, population_long, by=c("jaar", "Regio's"))
+maindataframe <- full_join(saleprice_houses_long, population_long, by=c("jaar", "Regio's"))
 
 #merging datasets "dataframe" and "number_of_houses" into 1 dataset: "df"
-df <- full_join(dataframe, number_of_houses, by=c("jaar","Regio's"))
+maindf <- full_join(maindataframe, number_of_houses, by=c("jaar","Regio's"))
 
 #Creating Maindata by removing unnecessary colums from df
-Maindata <- remove_missing(df, na.rm = FALSE,
+Maindata <- remove_missing(maindf, na.rm = FALSE,
                            vars = c("waarde.x", "waarde.y","Beginstand voorraad", "nieuwbouw", "eindstand voorraad"), 
                            finite = FALSE)
 Maindata$saleprice <- Maindata$waarde.x
@@ -50,7 +50,7 @@ Maindata$waarde.x <- NULL
 Maindata$waarde.y <- NULL
 Maindata$Onderwerp.x <- NULL
 Maindata$Onderwerp.y <- NULL
-
+n
 #adding variables to Maindata 
 Maindata <- Maindata %>%
   group_by(`Regio's`) %>%
@@ -67,9 +67,9 @@ BevolkMean2020 <- mean(data2020$BevolkGrootte, na.rm = TRUE)
 
 data2020$Groottepopulation <- 0
 data2020$Groottepopulation <- data2020$Groottepopulation %>% 
-  replace(data2020$BevolkGrootte < BevolkMean2020, "Small")
+  replace(data2020$BevolkGrootte < BevolkMean2020, "Smaller then average town")
 data2020$Groottepopulation <- data2020$Groottepopulation %>% 
-  replace(data2020$BevolkGrootte >= BevolkMean2020, "Big")
+  replace(data2020$BevolkGrootte >= BevolkMean2020, "Bigger then average town")
 
 ggplot(data = data2020, 
        aes(x = Groottepopulation, y = GrowthPercentagesupply)) +
