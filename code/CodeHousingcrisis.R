@@ -75,7 +75,7 @@ ggplot(data = data2020,
        aes(x = Groottepopulation, y = GrowthPercentagesupply)) +
   geom_boxplot() +
   xlab("population size") +
-  ylab("Growth housing supply in percentage") +
+  ylab("Growthpercentage housing supply") +
   ggtitle("Housing supply growth per subgroup")
 
 
