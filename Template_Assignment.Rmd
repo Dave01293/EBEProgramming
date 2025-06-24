@@ -9,13 +9,19 @@ output: pdf_document
 
 ```{r package_install, include=FALSE}
 install.packages("tidyverse")
+install.packages("cbsodataR")
+install.packages("sf")
+install.packages("ggplot2")
 ```
 
 ```{r packages}
 require(tidyverse)
+library(cbsodataR)
+library(sf)
+library(ggplot2)
 ```
 
-# Title Page
+# Quantifying a Social Problem: The Dutch Housing Crisis
 
 Include your names
 
@@ -42,7 +48,11 @@ Include the following:
 Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
 
 ```{r loading_data}
-dataset <- midwest
+number_of_houses <- read_csv("data/voorraad_woningen_en_nieuwbouw.csv")
+
+saleprice_houses <- read_csv("data/gemiddelde_verkoopprijzen_koopwoningen.csv")
+
+populationgrowth <- read_csv("data/bevolkingsontwikkeling_per_jaar.csv")
 ```
 
 midwest is an example dataset included in the tidyverse package
