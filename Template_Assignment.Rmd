@@ -42,7 +42,7 @@ Mathijs Baartscheer - 2863507
 
 **Problem Motivation & Literature:**
 
-The rise in housing prices is a social problem because it limits access to affordable homes, especially for low- and middle-income groups. This deepens inequality and turns housing from a basic need into a source of financial stress. Ensuring fair access to housing is essential for social stability and well-being. Rising housing prices have been described as a social problem by Dutch sources like CBS, Rijksoverheid, NOS, DNB (De Nederlandsche Bank), StatLine, and Statista (CBS, 2024a; CBS, 2024b; DNB, n.d.; NOS, 2023; Rijksoverheid, 2023; Statista, n.d.). They point out that more and more people are struggling to find affordable housing, especially younger people and families. The shortage of homes and the growing gap between income and housing costs are making it harder for people to live where they work or grew up, which creates social pressure.
+**The rise in housing prices is a social problem because it limits access to affordable homes, especially for low- and middle-income groups. This deepens inequality and turns housing from a basic need into a source of financial stress. Ensuring fair access to housing is essential for social stability and well-being. Rising housing prices have been described as a social problem by Dutch sources like CBS, Rijksoverheid, NOS, DNB (De Nederlandsche Bank), StatLine, and Statista (CBS, 2024a; CBS, 2024b; DNB, n.d.; NOS, 2023; Rijksoverheid, 2023; Statista, n.d.). They point out that more and more people are struggling to find affordable housing, especially younger people and families. The shortage of homes and the growing gap between income and housing costs are making it harder for people to live where they work or grew up, which creates social pressure.**
 
 \
 There are aspects of the rising house prices that haven’t been fully studied yet. For example, we don’t really know how it affects people’s mental health over time or how it changes the way communities stick together. Also, with more people working from home now, it’s not clear yet how that will change where people want to live. Our report provides new information by creating new variables describing the correlation between the population growth, the amount of houses on the market, and how they influence the average prices of the owner-occupied houses.
@@ -51,7 +51,7 @@ There are aspects of the rising house prices that haven’t been fully studied y
 
 ## 2.1 Load in the data
 
-Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!
+**Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!**
 
 ```{r loading_data}
 number_of_houses <- read_csv("data/voorraad_woningen_en_nieuwbouw.csv")
@@ -61,13 +61,23 @@ saleprice_houses <- read_csv("data/gemiddelde_verkoopprijzen_koopwoningen.csv")
 populationgrowth <- read_csv("data/bevolkingsontwikkeling_per_jaar.csv")
 ```
 
-midwest is an example dataset included in the tidyverse package
-
 ## 2.2 Provide a short summary of the dataset(s)
 
 ```{r}
-head(dataset)
+head(number_of_houses)
+head(saleprice_houses)
+head(populationgrowth)
 ```
+
+**Metadata**
+
+Each of the three datasets contains a column named **"**Regio's**"**, which lists all the municipalities in the Netherlands. Another column present in each dataset is called **"**jaar**"** or **"**periode**"**, both of which indicate the year the data was recorded.
+
+The dataset "number_of_houses" contains three additional columns. The columns "beginstand voorraad" and "eindstand voorraad" represent the housing supply at the start and end of the year, respectively. The other colom, named "nieuwbouw" represent the newly built housing.
+
+The dataset "populationgrowth" contains only one additional column besides those already mentioned. This column, named "onderwerp", consistently contains the value "bevolking aan het einde van de periode", which translates to "the population at the end of the year." The numbers under the years 2012, 2016, 2020, and 2024 represent the population at the end of each respective year.
+
+The dataset saleprice_houses has the same structure, but this time the extra column "onderwerp" represents the average sale price per municipality. The numbers under each year contain that information.
 
 **Data Sourcing & Description**
 
@@ -121,7 +131,7 @@ maindataframe <- full_join(saleprice_houses_long, population_long, by=c("jaar", 
 #merging datasets "dataframe" and "number_of_houses" into 1 dataset: "df"
 maindf <- full_join(maindataframe, number_of_houses, by=c("jaar","Regio's"))
 
-#Creating Maindata by removing unnecessary colums from df
+#Creating Maindata by removing unnecessary colums from df and renaming
 Maindata <- remove_missing(maindf, na.rm = FALSE,
                            vars = c("waarde.x", "waarde.y","Beginstand voorraad", "nieuwbouw", "eindstand voorraad"), 
                            finite = FALSE)
@@ -146,15 +156,13 @@ Maindata <- Maindata %>%
 
 **Data Cleaning**
 
-We combined the data sets of population growth, the number of owner-occupied houses, and the average value of the owner-occupied house. The parts that were overlapping were the years and the regions. We merged these so that the data was not going to be repeated in our document.\
+**We combined the data sets of population growth, the number of owner-occupied houses, and the average value of the owner-occupied house. The parts that were overlapping were the years and the regions. We merged these so that the data was not going to be repeated in our document.\
 For some years, we did not have all the data at our disposal. In an ideal world, we would have had every bit of data for every year, so that we could have been more accurate.\
-We had to use the data for the number of local authorities from the year 2012 because multiple fusions had happened since then. This also meant that some of the data we obtained was not usable because of the fusions.
+We had to use the data for the number of local authorities from the year 2012 because multiple fusions had happened since then. This also meant that some of the data we obtained was not usable because of the fusions.**
 
 ## 3.2 Generate necessary variables
 
 Variable 1:
-
-Weighted average sale price of a house in the Netherlands, calculated by weighting the average sale price in each municipality by the number of houses in that municipality, relative to the total number of houses nationwide.
 
 ```{r gen_var1}
 #houses filtered on 2012
@@ -222,17 +230,30 @@ Weighted_mean_houseprices = Weighted_mean_houseprices %>% rename(jaar = jaar.x)
 Weighted_mean_houseprices$jaar <- as.numeric(Weighted_mean_houseprices$jaar)
 ```
 
-Variable 2
+variable 2:
 
 ```{r gen_var2}
+Maindata <- Maindata %>%
+  group_by(`Regio's`) %>%
+  mutate(GrowthPercentagesupply = (`Eindstand voorraad` / lag(`Eindstand voorraad`)-1)*100)
+
+```
+
+Variable 3:
+
+```{r gen_var3}
+#adding variables to Maindata 
+Maindata <- Maindata %>%
+  group_by(`Regio's`) %>%
+  mutate(GrowthPercentagepopulation = (BevolkGrootte / lag(BevolkGrootte)-1)*100)
 
 ```
 
 **Creation of new variables**
 
-We used the variables *beginvoorraad* (starting inventory) and *eindvoorraad* (ending inventory) to create a new variable: “growth percentage voorraad.” By combining these two variables, we could determine the percentual increase or decrease in inventory among the big cities in the Netherlands. This allowed us to compare differences across the years 2012, 2016, 2020, and 2024. The results showed that in certain regions, inventory levels continuously increased, while in others, there was only a decline.\
-We also used the variables *bevolkingsgroei* (total population increase) and *bevolkingsdaling* (total population decrease) to create the variable “growth percentage bevolking,” meaning the percentual difference in population between time periods. With the variables we created, we can now find the relation between the differences in population, the number of houses on the market, and the average price for an owner-occupied house.\
-For the next variable, “growth percentage in housing supply,” we used the sub-variable *bevolkingsgrootte* (population size). We took the population size from the second period, divided it by the population size from the first period, subtracted 1, and multiplied the result by 100. This calculation gave us a plot that showed the growth in housing supply for both small and large population sizes (CBS, 2024a; CBS, 2024b).
+The first variable is the weighted average sale price of a house in the Netherlands, calculated by weighting the average sale price in each municipality by the number of houses in that municipality relative to the total number of houses nationwide. In this code, for each selected year (2012, 2016, 2020, and 2024), the housing supply at the end of the year is extracted from the dataset and cleaned by removing unnecessary columns. Then, this data is joined with the corresponding average sale prices per municipality for that year. Based on this, a weighted average sale price is calculated for each year, where municipalities with more houses carry greater weight. The data from all years is then combined into a single dataset. Finally, the dataset is filtered for a specific municipality (Amersfoort).
+
+The second variable is the growthpercentage of housing supply. First the data is grouped by municipality, so that calculations are done separately for each municipality. Then, for each municipality, a new column GrowthPercentagesupply is created which calculates the percentage growth in housing supply compared to the previous time period. This is done by dividing the current end-of-year supply by the previous period’s supply , subtracting 1, and multiplying by 100 to get a percentage change. The third variable is the growth percentage of the population and is created the exact same way as variable 2.
 
 ## 3.3 Visualize temporal variation
 
@@ -251,6 +272,8 @@ ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
   scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
 
 ```
+
+**uitleg**
 
 ## 3.4 Visualize spatial variation
 
@@ -357,6 +380,7 @@ We can conclude from our map that the housing prices are rising at a rapid rate,
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
+#subgroup analyse
 data2020 <- subset(Maindata, jaar == 2020)
 
 BevolkMean2020 <- mean(data2020$BevolkGrootte, na.rm = TRUE)
@@ -371,9 +395,8 @@ ggplot(data = data2020,
        aes(x = Groottepopulation, y = GrowthPercentagesupply)) +
   geom_boxplot() +
   xlab("population size") +
-  ylab("Growth housing supply in percentage") +
+  ylab("Growthpercentage housing supply") +
   ggtitle("Housing supply growth per subgroup")
-
 ```
 
 This plot further helps understand why the rise in average house prices is higher in the more urban areas than in the suburban parts of the Netherlands. The growth in housing supply in percentages is clearly lower in the larger population sized local authorities than in the smaller ones. Less housing supply growth will eventually mean higher prices, since the demand will rise with less supply. Especially so in the bigger cities where most of the jobs will be centralized.
@@ -405,7 +428,7 @@ By plotting the line on the Y-axis, which represents housing prices over time, w
 
 ## 5.1 Github repository link
 
-Provide the link to your PUBLIC repository here: ...
+Provide the link to your PUBLIC repository here: <https://github.com/>Dave01293/EBEProgramming
 
 **References list**
 
