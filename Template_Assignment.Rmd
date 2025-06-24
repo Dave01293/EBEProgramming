@@ -42,7 +42,7 @@ Mathijs Baartscheer - 2863507
 
 **Problem Motivation & Literature:**
 
-**The rise in housing prices is a social problem because it limits access to affordable homes, especially for low- and middle-income groups. This deepens inequality and turns housing from a basic need into a source of financial stress. Ensuring fair access to housing is essential for social stability and well-being. Rising housing prices have been described as a social problem by Dutch sources like CBS, Rijksoverheid, NOS, DNB (De Nederlandsche Bank), StatLine, and Statista (CBS, 2024a; CBS, 2024b; DNB, n.d.; NOS, 2023; Rijksoverheid, 2023; Statista, n.d.). They point out that more and more people are struggling to find affordable housing, especially younger people and families. The shortage of homes and the growing gap between income and housing costs are making it harder for people to live where they work or grew up, which creates social pressure.**
+The rise in housing prices is a social problem because it limits access to affordable homes, especially for low- and middle-income groups. This deepens inequality and turns housing from a basic need into a source of financial stress. Ensuring fair access to housing is essential for social stability and well-being. Rising housing prices have been described as a social problem by Dutch sources like CBS, Rijksoverheid, NOS, DNB (De Nederlandsche Bank), StatLine, and Statista (CBS, 2024a; CBS, 2024b; DNB, n.d.; NOS, 2023; Rijksoverheid, 2023; Statista, n.d.). They point out that more and more people are struggling to find affordable housing, especially younger people and families. The shortage of homes and the growing gap between income and housing costs are making it harder for people to live where they work or grew up, which creates social pressure.
 
 \
 There are aspects of the rising house prices that haven’t been fully studied yet. For example, we don’t really know how it affects people’s mental health over time or how it changes the way communities stick together. Also, with more people working from home now, it’s not clear yet how that will change where people want to live. Our report provides new information by creating new variables describing the correlation between the population growth, the amount of houses on the market, and how they influence the average prices of the owner-occupied houses.
@@ -51,13 +51,17 @@ There are aspects of the rising house prices that haven’t been fully studied y
 
 ## 2.1 Load in the data
 
-**Preferably from a URL, but if not, make sure to download the data and store it in a shared location that you can load the data in from. Do not store the data in a folder you include in the Github repository!**
+Before loading the data, ensure that the correct rows and columns are selected. Each dataset should include the same values for the columns "Regio's" (regions) and "Perioden" (periods). The selected rows for "Regio's" should be “Gemeenten per provincie” (municipalities per province), and the selected columns for "Perioden" should be the years 2012, 2016, 2020, and 2024.
+
+The "Onderwerp" (subject) row differs between datasets: \
+For the dataset "Bevolkingsontwikkeling; regio per maand", only select “Bevolking aan het einde van de periode” (population at the end of the period).\
+For "Bestaande koopwoningen; gemiddelde verkoopprijzen, regio", select “Gemiddelde verkoopprijs” (average sale price).\
+For "Voorraad woningen en nieuwbouw; gemeenten", there is an additional filter called “Gebruiksfunctie”, which should be set to “Woningen” (residential dwellings). Then, for “Onderwerp”, select “Beginstand voorraad”, “Nieuwbouw”, and “Eindstand voorraad” (initial stock, new construction, and end-of-year stock).
 
 ```{r loading_data}
+#For if something goes wrong with filtering
 number_of_houses <- read_csv("data/voorraad_woningen_en_nieuwbouw.csv")
-
 saleprice_houses <- read_csv("data/gemiddelde_verkoopprijzen_koopwoningen.csv")
-
 populationgrowth <- read_csv("data/bevolkingsontwikkeling_per_jaar.csv")
 ```
 
@@ -165,6 +169,21 @@ We had to use the data for the number of local authorities from the year 2012 be
 Variable 1:
 
 ```{r gen_var1}
+#municipality in 2012
+municipality_2012 <- cbs_get_sf("gemeente", 2012)
+
+#create dataset with saleprice_houses 2012
+
+saleprice_houses_2012 <- subset(Maindata, jaar == 2012) 
+
+#filter dataset, region, saleprice and year remains
+saleprice_houses_2012 <- saleprice_houses_2012 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata
+saleprice_municipality_2012 <- municipality_2012 %>% inner_join(saleprice_houses_2012, by = join_by(statnaam == `Regio's`))
+
+
 #houses filtered on 2012
 end_of_year_supply_houses_2012 <- subset (number_of_houses, jaar == 2012)
 
@@ -173,11 +192,27 @@ end_of_year_supply_houses_2012$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2012$newly_built_housing <- NULL
 
 end_of_year_supply_houses_2012 <- inner_join(end_of_year_supply_houses_2012, saleprice_municipality_2012, by = join_by(`Regio's` == statnaam))
-#weighted average 
+
+
+#weighted average 2012 
 end_of_year_supply_houses_2012$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2012$saleprice , end_of_year_supply_houses_2012$`Eindstand voorraad`, na.rm = T)
 
 
 ###########Time visualization weighted average houseprice in 2016#############
+#municipality in 2016
+municipality_2016 <- cbs_get_sf("gemeente", 2016)
+
+#create dataset with saleprice_houses 2016
+
+saleprice_houses_2016 <- subset(Maindata, jaar == 2016) 
+
+#filter ensuring only region, saleprice and year remains
+saleprice_houses_2016 <- saleprice_houses_2016 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata in 2016
+saleprice_municipality_2016 <- municipality_2016 %>% inner_join(saleprice_houses_2016, by = join_by(statnaam == `Regio's`))
+
 #houses filtered on 2016
 end_of_year_supply_houses_2016 <- subset (number_of_houses, jaar == 2016)
 
@@ -186,10 +221,25 @@ end_of_year_supply_houses_2016$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2016$newly_built_housing <- NULL
 
 end_of_year_supply_houses_2016 <- inner_join(end_of_year_supply_houses_2016, saleprice_municipality_2016, by = join_by(`Regio's` == statnaam))
-#weighted average 
+
+
+#weighted average 2016
 end_of_year_supply_houses_2016$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2016$saleprice , end_of_year_supply_houses_2016$`Eindstand voorraad`, na.rm = T)
 
 ###########Time visualization weighted average houseprice in 2020#############
+#municipality in 2020
+municipality_2020 <- cbs_get_sf("gemeente", 2020)
+
+#create dataset with saleprice_houses 2020
+saleprice_houses_2020 <- subset(Maindata, jaar == 2020) 
+
+#filter ensuring only region, saleprice and year remains
+saleprice_houses_2020 <- saleprice_houses_2020 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata in 2020
+saleprice_municipality_2020 <- municipality_2020 %>% inner_join(saleprice_houses_2020, by = join_by(statnaam == `Regio's`))
+
 #houses filtered on 2020
 end_of_year_supply_houses_2020 <- subset (number_of_houses, jaar == 2020)
 
@@ -198,10 +248,25 @@ end_of_year_supply_houses_2020$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2020$newly_built_housing <- NULL
 
 end_of_year_supply_houses_2020 <- inner_join(end_of_year_supply_houses_2020, saleprice_municipality_2020, by = join_by(`Regio's` == statnaam))
-#weighted average 
+
+
+#weighted average 2020
 end_of_year_supply_houses_2020$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2020$saleprice , end_of_year_supply_houses_2020$`Eindstand voorraad`, na.rm = T)
 
 ###########Time visualization weighted average houseprice in 2024#############
+#municipality in 2024
+municipality_2024 <- cbs_get_sf("gemeente", 2024)
+
+#create dataset with saleprice_houses 2024
+saleprice_houses_2024 <- subset(Maindata, jaar == 2024) 
+
+#filter ensuring only region, saleprice and year remains
+saleprice_houses_2024 <- saleprice_houses_2024 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata in 2024
+saleprice_municipality_2024 <- municipality_2024 %>% inner_join(saleprice_houses_2024, by = join_by(statnaam == `Regio's`))
+
 #houses filtered on 2024
 end_of_year_supply_houses_2024 <- subset (number_of_houses, jaar == 2024)
 
@@ -210,7 +275,8 @@ end_of_year_supply_houses_2024$`Beginstand supply`<- NULL
 end_of_year_supply_houses_2024$newly_built_housing <- NULL
 
 end_of_year_supply_houses_2024 <- inner_join(end_of_year_supply_houses_2024, saleprice_municipality_2024, by = join_by(`Regio's` == statnaam))
-#weighted average 
+
+#weighted average 2024 
 end_of_year_supply_houses_2024$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2024$saleprice , end_of_year_supply_houses_2024$`Eindstand voorraad`, na.rm = T)
 
 end_of_year_supply_houses <-  end_of_year_supply_houses_2012 
@@ -273,7 +339,7 @@ ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
 
 ```
 
-**uitleg**
+The graph
 
 ## 3.4 Visualize spatial variation
 
@@ -406,7 +472,18 @@ This plot further helps understand why the rise in average house prices is highe
 Analyze the relationship between two variables.
 
 ```{r analysis}
-
+ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
+  geom_point() +
+  xlab("Year") +
+  ylab("Price in € (x1000)") +
+  ggtitle("Weighted mean houseprice in the Netherlands per year") +
+  geom_line() +
+  geom_vline(xintercept = 2016) +
+  annotate("text", x = 2018, y = 400000, size = 4, label = "\nDecline in mortgage\n interest rates") +
+  scale_y_continuous(
+    breaks = seq(200000, 500000, 100000),    
+    labels = function(x) x / 1000) +
+  scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
 
 
 ```
@@ -432,11 +509,14 @@ Provide the link to your PUBLIC repository here: <https://github.com/>Dave01293/
 
 **References list**
 
-Centraal Bureau voor de Statistiek. (2024a). Bestaande koopwoningen; gemiddelde verkoopprijzen, regio. StatLine.[https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb\
+Centraal Bureau voor de Statistiek. (2024a). Voorraad woningen en niet-woningen; mutaties, gebruiksfunctie, regio. Statline. [StatLine - Voorraad woningen en niet-woningen; mutaties, gebruiksfunctie, regio\
 ](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb) (Continuously updated dataset)
 
 Centraal Bureau voor de Statistiek. (2024b). Bevolking; kerncijfers. StatLine.[https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table\
 ](https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table) (Continuously updated dataset)
+
+Centraal Bureau voor de Statistiek. (2025a). Bestaande koopwoningen; gemiddelde verkoopprijzen, regio. Statline. <https://opendata.cbs.nl/#/CBS/nl/dataset/83625NED/table?ts=17507909682>\
+(Continuously updated dataset)
 
 De Nederlandsche Bank. (n.d.). Rente \| Dashboard.[https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/\
 ](https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/) (Continuously updated resource)
