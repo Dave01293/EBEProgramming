@@ -24,6 +24,8 @@ require(tidyverse)
 library(cbsodataR)
 library(sf)
 library(ggplot2)
+
+
 ```
 
 # Quantifying a Social Problem: The Dutch Housing Crisis
@@ -57,6 +59,12 @@ The "Onderwerp" (subject) row differs between datasets: \
 For the dataset "Bevolkingsontwikkeling; regio per maand", only select “Bevolking aan het einde van de periode” (population at the end of the period).\
 For "Bestaande koopwoningen; gemiddelde verkoopprijzen, regio", select “Gemiddelde verkoopprijs” (average sale price).\
 For "Voorraad woningen en nieuwbouw; gemeenten", there is an additional filter called “Gebruiksfunctie”, which should be set to “Woningen” (residential dwellings). Then, for “Onderwerp”, select “Beginstand voorraad”, “Nieuwbouw”, and “Eindstand voorraad” (initial stock, new construction, and end-of-year stock).
+
+The datasets in URL: \
+- <https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb>\
+- <https://opendata.cbs.nl/#/CBS/nl/dataset/83625NED/table?ts=17507909682>[\
+](#0)- <https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table>[\
+](#0)
 
 ```{r loading_data}
 #For if something goes wrong with filtering
@@ -147,22 +155,12 @@ Maindata$Onderwerp.x <- NULL
 Maindata$Onderwerp.y <- NULL
 ```
 
-```{r}
-#adding variables to Maindata 
-Maindata <- Maindata %>%
-  group_by(`Regio's`) %>%
-  mutate(GrowthPercentagepopulation = (BevolkGrootte / lag(BevolkGrootte)-1)*100)
-
-Maindata <- Maindata %>%
-  group_by(`Regio's`) %>%
-  mutate(GrowthPercentagesupply = (`Eindstand voorraad` / lag(`Eindstand voorraad`)-1)*100)
+```{}
 ```
 
 **Data Cleaning**
 
-**We combined the data sets of population growth, the number of owner-occupied houses, and the average value of the owner-occupied house. The parts that were overlapping were the years and the regions. We merged these so that the data was not going to be repeated in our document.\
-For some years, we did not have all the data at our disposal. In an ideal world, we would have had every bit of data for every year, so that we could have been more accurate.\
-We had to use the data for the number of local authorities from the year 2012 because multiple fusions had happened since then. This also meant that some of the data we obtained was not usable because of the fusions.**
+This R script prepares and merges three datasets: "population growth, house sale prices, and housing supply", into a single, clean dataset. First, the population and sale price datasets are reshaped from wide to long format, aligning the yearly data under one column ("jaar"), and then merged by year and municipality. This combined data is then merged with the housing supply dataset using the same code. Rows with missing values in essential columns are removed and unnecessary columns are deleted or renamed for clarity. The result is a dataset containing all relevant information per municipality and year. In combining these datasets, overlapping variables, specifically the years and regions, were made and needed to be removed. There are also limitations with the data. Because not all years were complete, and some records had to be excluded. Additionally, due to municipality mergers since 2012, some regional data was inconsistent or unusable, making it necessary to rely on the 2012 structure for local authorities as a common reference point.
 
 ## 3.2 Generate necessary variables
 
@@ -442,8 +440,6 @@ The most notable difference between our time periods takes place in the period b
 We can conclude from our map that the housing prices are rising at a rapid rate, especially around more densely populated area’s. This follows up with our social problem that less people can afford to buy a house or buy a house later on in their lives.
 
 ## 3.5 Visualize sub-population variation
-
-What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
 #subgroup analyse
