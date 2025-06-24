@@ -1,0 +1,996 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Quantifying a Social Problem: The Dutch Housing Crisis},
+  pdfauthor={Matthijs Baars - Sem Klinge - 2826057 Huub de Jong - 2852204 Dave van den Berg - 2861451 Ellen Schutte - Mathijs Baartscheer - 2863507},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Quantifying a Social Problem: The Dutch Housing Crisis}
+\author{Matthijs Baars - Sem Klinge - 2826057 Huub de Jong - 2852204
+Dave van den Berg - 2861451 Ellen Schutte - Mathijs Baartscheer -
+2863507}
+\date{2025-06-24}
+
+\begin{document}
+\maketitle
+
+\section{Set-up your environment}\label{set-up-your-environment}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: tidyverse
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.5
+## v forcats   1.0.0     v stringr   1.5.1
+## v ggplot2   3.5.2     v tibble    3.3.0
+## v lubridate 1.9.4     v tidyr     1.3.1
+## v purrr     1.0.4     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(cbsodataR)}
+\FunctionTok{library}\NormalTok{(sf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linking to GEOS 3.13.1, GDAL 3.10.2, PROJ 9.5.1; sf_use_s2() is TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Quantifying a Social Problem: The Dutch Housing
+Crisis}\label{quantifying-a-social-problem-the-dutch-housing-crisis}
+
+Matthijs Baars -
+
+Sem Klinge - 2826057
+
+Huub de Jong - 2852204
+
+Dave van den Berg - 2861451
+
+Ellen Schutte -
+
+Mathijs Baartscheer - 2863507
+
+\textbf{Problem Motivation \& Literature:}
+
+The rise in housing prices is a social problem because it limits access
+to affordable homes, especially for low- and middle-income groups. This
+deepens inequality and turns housing from a basic need into a source of
+financial stress. Ensuring fair access to housing is essential for
+social stability and well-being. Rising housing prices have been
+described as a social problem by Dutch sources like CBS, Rijksoverheid,
+NOS, DNB (De Nederlandsche Bank), StatLine, and Statista (CBS, 2024a;
+CBS, 2024b; DNB, n.d.; NOS, 2023; Rijksoverheid, 2023; Statista, n.d.).
+They point out that more and more people are struggling to find
+affordable housing, especially younger people and families. The shortage
+of homes and the growing gap between income and housing costs are making
+it harder for people to live where they work or grew up, which creates
+social pressure.
+
+\hfill\break
+There are aspects of the rising house prices that haven't been fully
+studied yet. For example, we don't really know how it affects people's
+mental health over time or how it changes the way communities stick
+together. Also, with more people working from home now, it's not clear
+yet how that will change where people want to live. Our report provides
+new information by creating new variables describing the correlation
+between the population growth, the amount of houses on the market, and
+how they influence the average prices of the owner-occupied houses.
+
+\section{Part 2 - Data Sourcing}\label{part-2---data-sourcing}
+
+\subsection{2.1 Load in the data}\label{load-in-the-data}
+
+Before loading the data, ensure that the correct rows and columns are
+selected. Each dataset should include the same values for the columns
+``Regio's'' (regions) and ``Perioden'' (periods). The selected rows for
+``Regio's'' should be ``Gemeenten per provincie'' (municipalities per
+province), and the selected columns for ``Perioden'' should be the years
+2012, 2016, 2020, and 2024.
+
+The ``Onderwerp'' (subject) row differs between datasets:\\
+For the dataset ``Bevolkingsontwikkeling; regio per maand'', only select
+``Bevolking aan het einde van de periode'' (population at the end of the
+period).\\
+For ``Bestaande koopwoningen; gemiddelde verkoopprijzen, regio'', select
+``Gemiddelde verkoopprijs'' (average sale price).\\
+For ``Voorraad woningen en nieuwbouw; gemeenten'', there is an
+additional filter called ``Gebruiksfunctie'', which should be set to
+``Woningen'' (residential dwellings). Then, for ``Onderwerp'', select
+``Beginstand voorraad'', ``Nieuwbouw'', and ``Eindstand voorraad''
+(initial stock, new construction, and end-of-year stock).
+
+The datasets in URL:\\
+-
+\url{https://opendata.cbs.nl/statline/\#/CBS/nl/dataset/37230NED/table?fromstatweb}\\
+-
+\url{https://opendata.cbs.nl/\#/CBS/nl/dataset/83625NED/table?ts=17507909682}\hyperref[0]{\hfill\break
+}-
+\url{https://opendata.cbs.nl/\#/CBS/nl/dataset/81955NED/table}\hyperref[0]{\hfill\break
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#For if something goes wrong with filtering}
+\NormalTok{number\_of\_houses }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/voorraad\_woningen\_en\_nieuwbouw.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 1765 Columns: 5
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): Regio's
+## dbl (4): Perioden, Beginstand voorraad, Nieuwbouw, Eindstand voorraad
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{saleprice\_houses }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/gemiddelde\_verkoopprijzen\_koopwoningen.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 729 Columns: 6
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (2): Regio's, Onderwerp
+## dbl (4): 2012, 2016, 2020, 2024
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{populationgrowth }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/bevolkingsontwikkeling\_per\_jaar.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 557 Columns: 6
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (2): Regio's, Onderwerp
+## dbl (4): 2012, 2016, 2020, 2024
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\subsection{2.2 Provide a short summary of the
+dataset(s)}\label{provide-a-short-summary-of-the-datasets}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(number\_of\_houses)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 5
+##   `Regio's`   Perioden `Beginstand voorraad` Nieuwbouw `Eindstand voorraad`
+##   <chr>          <dbl>                 <dbl>     <dbl>                <dbl>
+## 1 Aa en Hunze     2012                 12414        14                11214
+## 2 Aa en Hunze     2016                 11131        19                11145
+## 3 Aa en Hunze     2020                 11179        14                11207
+## 4 Aa en Hunze     2024                 11500        60                11555
+## 5 Aalburg         2012                  4769        43                 4857
+## 6 Aalburg         2016                  5031        53                 5071
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(saleprice\_houses)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 6
+##   `Regio's`    Onderwerp               `2012` `2016` `2020` `2024`
+##   <chr>        <chr>                    <dbl>  <dbl>  <dbl>  <dbl>
+## 1 Aa en Hunze  Gemiddelde verkoopprijs 219111 227275 303789 458471
+## 2 Aalburg      Gemiddelde verkoopprijs 250662 248188     NA     NA
+## 3 Aalsmeer     Gemiddelde verkoopprijs 265452 332572 438060 575924
+## 4 Aalten       Gemiddelde verkoopprijs 176637 192007 261776 358565
+## 5 Ter Aar      Gemiddelde verkoopprijs     NA     NA     NA     NA
+## 6 Aarle-Rixtel Gemiddelde verkoopprijs     NA     NA     NA     NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(populationgrowth)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 6
+##   `Regio's`   Onderwerp                              `2012` `2016` `2020` `2024`
+##   <chr>       <chr>                                   <dbl>  <dbl>  <dbl>  <dbl>
+## 1 Aa en Hunze Bevolking aan het einde van de periode  25541  25286  25399  25936
+## 2 Aalburg     Bevolking aan het einde van de periode  12774  13067     NA     NA
+## 3 Aalsmeer    Bevolking aan het einde van de periode  30618  31373  31991  33209
+## 4 Aalten      Bevolking aan het einde van de periode  27082  27047  27120  27471
+## 5 Ter Aar     Bevolking aan het einde van de periode     NA     NA     NA     NA
+## 6 Abcoude     Bevolking aan het einde van de periode     NA     NA     NA     NA
+\end{verbatim}
+
+\textbf{Metadata}
+
+Each of the three datasets contains a column named
+\textbf{``\textbf{Regio's}''}, which lists all the municipalities in the
+Netherlands. Another column present in each dataset is called
+\textbf{``\textbf{jaar}''} or \textbf{``\textbf{periode}''}, both of
+which indicate the year the data was recorded.
+
+The dataset ``number\_of\_houses'' contains three additional columns.
+The columns ``beginstand voorraad'' and ``eindstand voorraad'' represent
+the housing supply at the start and end of the year, respectively. The
+other colom, named ``nieuwbouw'' represent the newly built housing.
+
+The dataset ``populationgrowth'' contains only one additional column
+besides those already mentioned. This column, named ``onderwerp'',
+consistently contains the value ``bevolking aan het einde van de
+periode'', which translates to ``the population at the end of the
+year.'' The numbers under the years 2012, 2016, 2020, and 2024 represent
+the population at the end of each respective year.
+
+The dataset saleprice\_houses has the same structure, but this time the
+extra column ``onderwerp'' represents the average sale price per
+municipality. The numbers under each year contain that information.
+
+\textbf{Data Sourcing \& Description}
+
+Our main source for relevant data is going to be the Centraal Bureau
+voor de Statistiek (CBS, 2024a). The CBS is an independent public body
+of the Dutch government, making it a credible source for our data. It
+publishes European statistics covering all sorts of data. The data we
+are going to use will be of the years 2012, 2016, 2020, and 2024. The
+three datasets we will be using for our project are the total population
+growth in the Netherlands, the total amount of houses available on the
+market in the Netherlands, and the average price of houses in the
+Netherlands. Total population growth refers to the increase/decrease in
+population in the Netherlands, including immigration and students. The
+total amount of houses available will refer to the number of houses that
+are meant to be lived in (no office spaces or public buildings). This
+does not include rental houses, since they are not owner-occupied.
+
+\hfill\break
+Total population and total amount of houses available on the market are
+directly related to each other in the way that with more population
+growth, the total amount of houses on the market should increase. This,
+in turn, correlates to our third dataset---average price of houses (CBS,
+2024a; CBS, 2024b). When a shift in the amount of houses on the market
+occurs, a shift in the average price is to be expected.
+
+This data is relevant for researching our topic because it shows how
+much influence the growth of our population has on the market price and
+whether the market price has increased more or less than expected from
+our population growth. We can infer from this outcome whether our social
+problem---the rising housing prices---is related to population growth
+and whether the problem is worsening.
+
+\hfill\break
+Limitations to our data include that we are not looking at whether all
+the houses on the market have been bought up or not. This means that
+when, for example, only the cheaper houses are being purchased or at
+least a larger percentage of them, the average price will drop. It may
+not be a significant number, but it is a limitation. We are also not
+including inflation, which means that the rise in average house price
+will probably be higher than what can be concluded from the population
+growth.
+
+\section{Part 3 - Quantifying}\label{part-3---quantifying}
+
+\subsection{3.1 Data cleaning}\label{data-cleaning}
+
+Say we want to include only larger distances (above 2) in our dataset,
+we can filter for this.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#population data wide to long}
+
+\NormalTok{population\_long }\OtherTok{\textless{}{-}}\NormalTok{ populationgrowth }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}
+    \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"2012"}\NormalTok{, }\StringTok{"2016"}\NormalTok{, }\StringTok{"2020"}\NormalTok{, }\StringTok{"2024"}\NormalTok{),}
+    \AttributeTok{names\_to =} \StringTok{"jaar"}\NormalTok{,}
+    \AttributeTok{values\_to =} \StringTok{"waarde"}
+\NormalTok{  )}
+
+\CommentTok{\# saleprice\_houses wide to long}
+
+\NormalTok{saleprice\_houses\_long }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}
+    \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{"2012"}\NormalTok{, }\StringTok{"2016"}\NormalTok{, }\StringTok{"2020"}\NormalTok{, }\StringTok{"2024"}\NormalTok{),}
+    \AttributeTok{names\_to =} \StringTok{"jaar"}\NormalTok{,}
+    \AttributeTok{values\_to =} \StringTok{"waarde"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Rename colums from "jaar" to "perioden"}
+\NormalTok{number\_of\_houses }\OtherTok{\textless{}{-}}\NormalTok{ number\_of\_houses }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{jaar =}\NormalTok{ Perioden)}
+
+\NormalTok{number\_of\_houses}\SpecialCharTok{$}\NormalTok{jaar }\OtherTok{\textless{}{-}} \FunctionTok{as.character}\NormalTok{(number\_of\_houses}\SpecialCharTok{$}\NormalTok{jaar)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#merging datasets "saleprice\_houses\_long" and "population\_long" into 1 dataset: "dataframe"}
+\NormalTok{maindataframe }\OtherTok{\textless{}{-}} \FunctionTok{full\_join}\NormalTok{(saleprice\_houses\_long, population\_long, }\AttributeTok{by=}\FunctionTok{c}\NormalTok{(}\StringTok{"jaar"}\NormalTok{, }\StringTok{"Regio\textquotesingle{}s"}\NormalTok{))}
+
+\CommentTok{\#merging datasets "dataframe" and "number\_of\_houses" into 1 dataset: "df"}
+\NormalTok{maindf }\OtherTok{\textless{}{-}} \FunctionTok{full\_join}\NormalTok{(maindataframe, number\_of\_houses, }\AttributeTok{by=}\FunctionTok{c}\NormalTok{(}\StringTok{"jaar"}\NormalTok{,}\StringTok{"Regio\textquotesingle{}s"}\NormalTok{))}
+
+\CommentTok{\#Creating Maindata by removing unnecessary colums from df and renaming}
+\NormalTok{Maindata }\OtherTok{\textless{}{-}} \FunctionTok{remove\_missing}\NormalTok{(maindf, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{,}
+                           \AttributeTok{vars =} \FunctionTok{c}\NormalTok{(}\StringTok{"waarde.x"}\NormalTok{, }\StringTok{"waarde.y"}\NormalTok{,}\StringTok{"Beginstand voorraad"}\NormalTok{, }\StringTok{"nieuwbouw"}\NormalTok{, }\StringTok{"eindstand voorraad"}\NormalTok{), }
+                           \AttributeTok{finite =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 1419 rows containing missing values or values outside the
+## scale range.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Maindata}\SpecialCharTok{$}\NormalTok{saleprice }\OtherTok{\textless{}{-}}\NormalTok{ Maindata}\SpecialCharTok{$}\NormalTok{waarde.x}
+\NormalTok{Maindata}\SpecialCharTok{$}\NormalTok{BevolkGrootte }\OtherTok{\textless{}{-}}\NormalTok{ Maindata}\SpecialCharTok{$}\NormalTok{waarde.y}
+\NormalTok{Maindata}\SpecialCharTok{$}\NormalTok{waarde.x }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{Maindata}\SpecialCharTok{$}\NormalTok{waarde.y }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{Maindata}\SpecialCharTok{$}\NormalTok{Onderwerp.x }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{Maindata}\SpecialCharTok{$}\NormalTok{Onderwerp.y }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+\end{verbatim}
+
+\textbf{Data Cleaning}
+
+This R script prepares and merges three datasets: ``population growth,
+house sale prices, and housing supply'', into a single, clean dataset.
+First, the population and sale price datasets are reshaped from wide to
+long format, aligning the yearly data under one column (``jaar''), and
+then merged by year and municipality. This combined data is then merged
+with the housing supply dataset using the same code. Rows with missing
+values in essential columns are removed and unnecessary columns are
+deleted or renamed for clarity. The result is a dataset containing all
+relevant information per municipality and year. In combining these
+datasets, overlapping variables, specifically the years and regions,
+were made and needed to be removed. There are also limitations with the
+data. Because not all years were complete, and some records had to be
+excluded. Additionally, due to municipality mergers since 2012, some
+regional data was inconsistent or unusable, making it necessary to rely
+on the 2012 structure for local authorities as a common reference point.
+
+\subsection{3.2 Generate necessary
+variables}\label{generate-necessary-variables}
+
+Variable 1:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#municipality in 2012}
+\NormalTok{municipality\_2012 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2012}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2012}
+
+\NormalTok{saleprice\_houses\_2012 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2012}\NormalTok{) }
+
+\CommentTok{\#filter dataset, region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2012 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2012 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata}
+\NormalTok{saleprice\_municipality\_2012 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2012 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2012, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+
+\CommentTok{\#houses filtered on 2012}
+\NormalTok{end\_of\_year\_supply\_houses\_2012 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{ (number\_of\_houses, jaar }\SpecialCharTok{==} \DecValTok{2012}\NormalTok{)}
+
+\CommentTok{\#filter ensuring only end\_of\_yearsupply remains}
+\NormalTok{end\_of\_year\_supply\_houses\_2012}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Beginstand supply}\StringTok{\textasciigrave{}}\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{end\_of\_year\_supply\_houses\_2012}\SpecialCharTok{$}\NormalTok{newly\_built\_housing }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+
+\NormalTok{end\_of\_year\_supply\_houses\_2012 }\OtherTok{\textless{}{-}} \FunctionTok{inner\_join}\NormalTok{(end\_of\_year\_supply\_houses\_2012, saleprice\_municipality\_2012, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}} \SpecialCharTok{==}\NormalTok{ statnaam))}
+
+
+\CommentTok{\#weighted average 2012 }
+\NormalTok{end\_of\_year\_supply\_houses\_2012}\SpecialCharTok{$}\NormalTok{weighted\_mean\_salesprice }\OtherTok{=} \FunctionTok{weighted.mean}\NormalTok{(end\_of\_year\_supply\_houses\_2012}\SpecialCharTok{$}\NormalTok{saleprice , end\_of\_year\_supply\_houses\_2012}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Eindstand voorraad}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm =}\NormalTok{ T)}
+
+
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#Time visualization weighted average houseprice in 2016\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#municipality in 2016}
+\NormalTok{municipality\_2016 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2016}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2016}
+
+\NormalTok{saleprice\_houses\_2016 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2016}\NormalTok{) }
+
+\CommentTok{\#filter ensuring only region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2016 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2016 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata in 2016}
+\NormalTok{saleprice\_municipality\_2016 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2016 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2016, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+\CommentTok{\#houses filtered on 2016}
+\NormalTok{end\_of\_year\_supply\_houses\_2016 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{ (number\_of\_houses, jaar }\SpecialCharTok{==} \DecValTok{2016}\NormalTok{)}
+
+\CommentTok{\#filter ensuring only end\_of\_year supply remains}
+\NormalTok{end\_of\_year\_supply\_houses\_2016}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Beginstand supply}\StringTok{\textasciigrave{}}\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{end\_of\_year\_supply\_houses\_2016}\SpecialCharTok{$}\NormalTok{newly\_built\_housing }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+
+\NormalTok{end\_of\_year\_supply\_houses\_2016 }\OtherTok{\textless{}{-}} \FunctionTok{inner\_join}\NormalTok{(end\_of\_year\_supply\_houses\_2016, saleprice\_municipality\_2016, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}} \SpecialCharTok{==}\NormalTok{ statnaam))}
+
+
+\CommentTok{\#weighted average 2016}
+\NormalTok{end\_of\_year\_supply\_houses\_2016}\SpecialCharTok{$}\NormalTok{weighted\_mean\_salesprice }\OtherTok{=} \FunctionTok{weighted.mean}\NormalTok{(end\_of\_year\_supply\_houses\_2016}\SpecialCharTok{$}\NormalTok{saleprice , end\_of\_year\_supply\_houses\_2016}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Eindstand voorraad}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm =}\NormalTok{ T)}
+
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#Time visualization weighted average houseprice in 2020\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#municipality in 2020}
+\NormalTok{municipality\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2020}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2020}
+\NormalTok{saleprice\_houses\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2020}\NormalTok{) }
+
+\CommentTok{\#filter ensuring only region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2020 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata in 2020}
+\NormalTok{saleprice\_municipality\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2020 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2020, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+\CommentTok{\#houses filtered on 2020}
+\NormalTok{end\_of\_year\_supply\_houses\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{ (number\_of\_houses, jaar }\SpecialCharTok{==} \DecValTok{2020}\NormalTok{)}
+
+\CommentTok{\#filter ensuring only end\_of\_year supply remains}
+\NormalTok{end\_of\_year\_supply\_houses\_2020}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Beginstand supply}\StringTok{\textasciigrave{}}\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{end\_of\_year\_supply\_houses\_2020}\SpecialCharTok{$}\NormalTok{newly\_built\_housing }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+
+\NormalTok{end\_of\_year\_supply\_houses\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{inner\_join}\NormalTok{(end\_of\_year\_supply\_houses\_2020, saleprice\_municipality\_2020, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}} \SpecialCharTok{==}\NormalTok{ statnaam))}
+
+
+\CommentTok{\#weighted average 2020}
+\NormalTok{end\_of\_year\_supply\_houses\_2020}\SpecialCharTok{$}\NormalTok{weighted\_mean\_salesprice }\OtherTok{=} \FunctionTok{weighted.mean}\NormalTok{(end\_of\_year\_supply\_houses\_2020}\SpecialCharTok{$}\NormalTok{saleprice , end\_of\_year\_supply\_houses\_2020}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Eindstand voorraad}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm =}\NormalTok{ T)}
+
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#Time visualization weighted average houseprice in 2024\#\#\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#municipality in 2024}
+\NormalTok{municipality\_2024 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2024}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2024}
+\NormalTok{saleprice\_houses\_2024 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2024}\NormalTok{) }
+
+\CommentTok{\#filter ensuring only region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2024 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2024 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata in 2024}
+\NormalTok{saleprice\_municipality\_2024 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2024 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2024, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+\CommentTok{\#houses filtered on 2024}
+\NormalTok{end\_of\_year\_supply\_houses\_2024 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{ (number\_of\_houses, jaar }\SpecialCharTok{==} \DecValTok{2024}\NormalTok{)}
+
+\CommentTok{\#filter ensuring only end\_of\_year supply remains}
+\NormalTok{end\_of\_year\_supply\_houses\_2024}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Beginstand supply}\StringTok{\textasciigrave{}}\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{end\_of\_year\_supply\_houses\_2024}\SpecialCharTok{$}\NormalTok{newly\_built\_housing }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+
+\NormalTok{end\_of\_year\_supply\_houses\_2024 }\OtherTok{\textless{}{-}} \FunctionTok{inner\_join}\NormalTok{(end\_of\_year\_supply\_houses\_2024, saleprice\_municipality\_2024, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}} \SpecialCharTok{==}\NormalTok{ statnaam))}
+
+\CommentTok{\#weighted average 2024 }
+\NormalTok{end\_of\_year\_supply\_houses\_2024}\SpecialCharTok{$}\NormalTok{weighted\_mean\_salesprice }\OtherTok{=} \FunctionTok{weighted.mean}\NormalTok{(end\_of\_year\_supply\_houses\_2024}\SpecialCharTok{$}\NormalTok{saleprice , end\_of\_year\_supply\_houses\_2024}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Eindstand voorraad}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm =}\NormalTok{ T)}
+
+\NormalTok{end\_of\_year\_supply\_houses }\OtherTok{\textless{}{-}}\NormalTok{  end\_of\_year\_supply\_houses\_2012 }
+\NormalTok{end\_of\_year\_supply\_houses }\OtherTok{=} \FunctionTok{rbind}\NormalTok{(end\_of\_year\_supply\_houses, end\_of\_year\_supply\_houses\_2016)}
+\NormalTok{end\_of\_year\_supply\_houses }\OtherTok{=} \FunctionTok{rbind}\NormalTok{(end\_of\_year\_supply\_houses, end\_of\_year\_supply\_houses\_2020)}
+\NormalTok{end\_of\_year\_supply\_houses }\OtherTok{=} \FunctionTok{rbind}\NormalTok{(end\_of\_year\_supply\_houses, end\_of\_year\_supply\_houses\_2024)}
+
+\DocumentationTok{\#\#\#filter ensuring only 1 region remains}
+\NormalTok{Weighted\_mean\_houseprices }\OtherTok{=}\NormalTok{ end\_of\_year\_supply\_houses }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}} \SpecialCharTok{==} \StringTok{"Amersfoort"}\NormalTok{)}
+
+\DocumentationTok{\#\#\#filterensuring only Weighted\_mean\_houseprices remains}
+\NormalTok{Weighted\_mean\_houseprices }\OtherTok{=}\NormalTok{ Weighted\_mean\_houseprices }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(jaar.x, weighted\_mean\_salesprice)}
+\NormalTok{Weighted\_mean\_houseprices }\OtherTok{=}\NormalTok{ Weighted\_mean\_houseprices }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{rename}\NormalTok{(}\AttributeTok{jaar =}\NormalTok{ jaar.x)}
+
+\CommentTok{\#ensuring year will be treated as numeric}
+\NormalTok{Weighted\_mean\_houseprices}\SpecialCharTok{$}\NormalTok{jaar }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(Weighted\_mean\_houseprices}\SpecialCharTok{$}\NormalTok{jaar)}
+\end{Highlighting}
+\end{Shaded}
+
+variable 2:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Maindata }\OtherTok{\textless{}{-}}\NormalTok{ Maindata }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{GrowthPercentagesupply =}\NormalTok{ (}\StringTok{\textasciigrave{}}\AttributeTok{Eindstand voorraad}\StringTok{\textasciigrave{}} \SpecialCharTok{/} \FunctionTok{lag}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Eindstand voorraad}\StringTok{\textasciigrave{}}\NormalTok{)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Variable 3:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#adding variables to Maindata }
+\NormalTok{Maindata }\OtherTok{\textless{}{-}}\NormalTok{ Maindata }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{GrowthPercentagepopulation =}\NormalTok{ (BevolkGrootte }\SpecialCharTok{/} \FunctionTok{lag}\NormalTok{(BevolkGrootte)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Creation of new variables}
+
+The first variable is the weighted average sale price of a house in the
+Netherlands, calculated by weighting the average sale price in each
+municipality by the number of houses in that municipality relative to
+the total number of houses nationwide. In this code, for each selected
+year (2012, 2016, 2020, and 2024), the housing supply at the end of the
+year is extracted from the dataset and cleaned by removing unnecessary
+columns. Then, this data is joined with the corresponding average sale
+prices per municipality for that year. Based on this, a weighted average
+sale price is calculated for each year, where municipalities with more
+houses carry greater weight. The data from all years is then combined
+into a single dataset. Finally, the dataset is filtered for a specific
+municipality (Amersfoort).
+
+The second variable is the growthpercentage of housing supply. First the
+data is grouped by municipality, so that calculations are done
+separately for each municipality. Then, for each municipality, a new
+column GrowthPercentagesupply is created which calculates the percentage
+growth in housing supply compared to the previous time period. This is
+done by dividing the current end-of-year supply by the previous period's
+supply , subtracting 1, and multiplying by 100 to get a percentage
+change. The third variable is the growth percentage of the population
+and is created the exact same way as variable 2.
+
+\subsection{3.3 Visualize temporal
+variation}\label{visualize-temporal-variation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(Weighted\_mean\_houseprices, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ jaar, }\AttributeTok{y =}\NormalTok{ weighted\_mean\_salesprice)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Year"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Price in € (x1000)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Weighted mean houseprice in the Netherlands per year"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =} \DecValTok{2016}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\AttributeTok{x =} \DecValTok{2018}\NormalTok{, }\AttributeTok{y =} \DecValTok{400000}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{, }\AttributeTok{label =} \StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Decline in mortgage}\SpecialCharTok{\textbackslash{}n}\StringTok{ interest rates"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+    \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\DecValTok{200000}\NormalTok{, }\DecValTok{500000}\NormalTok{, }\DecValTok{100000}\NormalTok{),    }
+    \AttributeTok{labels =} \ControlFlowTok{function}\NormalTok{(x) x }\SpecialCharTok{/} \DecValTok{1000}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{2012}\NormalTok{, }\DecValTok{2016}\NormalTok{, }\DecValTok{2020}\NormalTok{, }\DecValTok{2024}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/figure-latex/unnamed-chunk-4-1.pdf}}
+
+The graph illustrates a sharp rise in the weighted average house prices
+in the Netherlands from 2012 to 2024, highlighting a broader social
+issue. The relatively modest increase between 2012 and 2016 contrasts
+with the steep climb seen afterward, which aligns with a period of
+declining mortgage interest rates. Lower borrowing costs likely made it
+easier for people to buy homes, increasing demand and pushing prices
+higher. This trend reflects the growing unaffordability of housing in
+the Netherlands, especially for lower- and middle-income groups, and
+underscores the urgent need for policies that address both housing
+supply and financial accessibility.
+
+\subsection{3.4 Visualize spatial
+variation}\label{visualize-spatial-variation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#extreme saleprice\_municipality}
+\NormalTok{minimumprice }\OtherTok{=} \FunctionTok{min}\NormalTok{(Maindata}\SpecialCharTok{$}\NormalTok{saleprice, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{maximumprice }\OtherTok{=} \FunctionTok{max}\NormalTok{(Maindata}\SpecialCharTok{$}\NormalTok{saleprice, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#Heatmap Netherlands average salesprice house in 2012\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#municipality in 2012}
+\NormalTok{municipality\_2012 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2012}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2012}
+
+\NormalTok{saleprice\_houses\_2012 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2012}\NormalTok{) }
+
+\CommentTok{\#filter dataset, region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2012 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2012 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata}
+\NormalTok{saleprice\_municipality\_2012 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2012 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2012, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+\CommentTok{\#Creating Heatmap 2012 }
+\FunctionTok{ggplot}\NormalTok{(saleprice\_municipality\_2012, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ saleprice)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_gradient}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(minimumprice, maximumprice), }\AttributeTok{low =} \StringTok{"\#00FFFF"}\NormalTok{, }\AttributeTok{high =} \StringTok{"red"}\NormalTok{, }\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_number}\NormalTok{(}\AttributeTok{big.mark =} \StringTok{"."}\NormalTok{, }\AttributeTok{decimal.mark =} \StringTok{","}\NormalTok{), }\AttributeTok{name =} \StringTok{"Average salesprice house NL in 2012(€)"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/figure-latex/visualise_map-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#Heatmap Netherlands average salesprice house in 2016\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#municipality in 2016}
+\NormalTok{municipality\_2016 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2016}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2016}
+
+\NormalTok{saleprice\_houses\_2016 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2016}\NormalTok{) }
+
+\CommentTok{\#filter ensuring only region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2016 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2016 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata in 2016}
+\NormalTok{saleprice\_municipality\_2016 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2016 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2016, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+\CommentTok{\#Creating Heatmap }
+\FunctionTok{ggplot}\NormalTok{(saleprice\_municipality\_2016, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ saleprice)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_gradient}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(minimumprice, maximumprice),}\AttributeTok{low =} \StringTok{"\#00FFFF"}\NormalTok{, }\AttributeTok{high =} \StringTok{"red"}\NormalTok{, }\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_number}\NormalTok{(}\AttributeTok{big.mark =} \StringTok{"."}\NormalTok{, }\AttributeTok{decimal.mark =} \StringTok{","}\NormalTok{), }\AttributeTok{name =} \StringTok{"Average salesprice house NL in 2016 (€)"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/figure-latex/visualise_map-2.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#Heatmap Netherlands average salesprice house in 2020\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#municipality in 2020}
+\NormalTok{municipality\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2020}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2020}
+
+\NormalTok{saleprice\_houses\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2020}\NormalTok{) }
+
+\CommentTok{\#filter ensuring only region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2020 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata in 2020}
+\NormalTok{saleprice\_municipality\_2020 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2020 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2020, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+\CommentTok{\#Creating Heatmap }
+\FunctionTok{ggplot}\NormalTok{(saleprice\_municipality\_2020, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ saleprice)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_gradient}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(minimumprice, maximumprice), }\AttributeTok{low =} \StringTok{"\#00FFFF"}\NormalTok{, }\AttributeTok{high =} \StringTok{"red"}\NormalTok{, }\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_number}\NormalTok{(}\AttributeTok{big.mark =} \StringTok{"."}\NormalTok{, }\AttributeTok{decimal.mark =} \StringTok{","}\NormalTok{), }\AttributeTok{name =} \StringTok{"Average salesprice house NL in 2020 (€)"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/figure-latex/visualise_map-3.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#Heatmap Netherlands average salesprice house in 2024\#\#\#\#\#\#\#\#\#\#\#}
+\CommentTok{\#municipality in 2024}
+\NormalTok{municipality\_2024 }\OtherTok{\textless{}{-}} \FunctionTok{cbs\_get\_sf}\NormalTok{(}\StringTok{"gemeente"}\NormalTok{, }\DecValTok{2024}\NormalTok{)}
+
+\CommentTok{\#create dataset with saleprice\_houses 2024}
+
+\NormalTok{saleprice\_houses\_2024 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2024}\NormalTok{) }
+
+\CommentTok{\#filter ensuring only region, saleprice and year remains}
+\NormalTok{saleprice\_houses\_2024 }\OtherTok{\textless{}{-}}\NormalTok{ saleprice\_houses\_2024 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{, jaar, saleprice)}
+
+\CommentTok{\#merging municipalitydata with salepricedata in 2024}
+\NormalTok{saleprice\_municipality\_2024 }\OtherTok{\textless{}{-}}\NormalTok{ municipality\_2024 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{inner\_join}\NormalTok{(saleprice\_houses\_2024, }\AttributeTok{by =} \FunctionTok{join\_by}\NormalTok{(statnaam }\SpecialCharTok{==} \StringTok{\textasciigrave{}}\AttributeTok{Regio\textquotesingle{}s}\StringTok{\textasciigrave{}}\NormalTok{))}
+
+\CommentTok{\#Creating Heatmap }
+\FunctionTok{ggplot}\NormalTok{(saleprice\_municipality\_2024, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ saleprice)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_gradient}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(minimumprice, maximumprice), }\AttributeTok{low =} \StringTok{"\#00FFFF"}\NormalTok{, }\AttributeTok{high =} \StringTok{"red"}\NormalTok{, }\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_number}\NormalTok{(}\AttributeTok{big.mark =} \StringTok{"."}\NormalTok{, }\AttributeTok{decimal.mark =} \StringTok{","}\NormalTok{), }\AttributeTok{name =} \StringTok{"Average salesprice house NL in 2024 (€)"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/figure-latex/visualise_map-4.pdf}}
+
+Here you provide a description of why the plot above is relevant to your
+specific social problem.
+
+\textbf{Visualization of spatial- and temporal visualization}
+
+When looking at the heatmap we have created, we can see that in 2012 the
+average prices across the whole of the Netherlands were significantly
+lower than they were in 2024. From 2012 to 2016 the price increases were
+mostly centred around the `Randstad'. The Randstad is used to refer to
+an ring shaped area which is more densely populated because of four
+larger sized cities near each other in the Netherlands. Those cities are
+Utrecht, Den Hague, Rotterdam and finally Amsterdam. It is commonly
+known that there is a high demand for housing in the Randstad for years
+now and this can also be concluded from our map.
+
+Throughout the years the map becomes more and more red, clearly
+indicating that the average price is going up. From 2016 up on till 2020
+we can see that, especially around the big cities, prices are rising.
+The difference with 2012-2016 though is that the rest of the country is
+also slowly starting to follow this trend.
+
+The most notable difference between our time periods takes place in the
+period between 2020 and 2024. The map is now more covered in red than in
+blue, showing that the rise in average is now really influencing the
+rest of the country as well. Some parts around the big cities even hit a
+bright red colour.
+
+We can conclude from our map that the housing prices are rising at a
+rapid rate, especially around more densely populated area's. This
+follows up with our social problem that less people can afford to buy a
+house or buy a house later on in their lives.
+
+\subsection{3.5 Visualize sub-population
+variation}\label{visualize-sub-population-variation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#subgroup analyse}
+\NormalTok{data2020 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(Maindata, jaar }\SpecialCharTok{==} \DecValTok{2020}\NormalTok{)}
+
+\NormalTok{BevolkMean2020 }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(data2020}\SpecialCharTok{$}\NormalTok{BevolkGrootte, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{data2020}\SpecialCharTok{$}\NormalTok{Groottepopulation }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{data2020}\SpecialCharTok{$}\NormalTok{Groottepopulation }\OtherTok{\textless{}{-}}\NormalTok{ data2020}\SpecialCharTok{$}\NormalTok{Groottepopulation }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{replace}\NormalTok{(data2020}\SpecialCharTok{$}\NormalTok{BevolkGrootte }\SpecialCharTok{\textless{}}\NormalTok{ BevolkMean2020, }\StringTok{"Smaller then average town"}\NormalTok{)}
+\NormalTok{data2020}\SpecialCharTok{$}\NormalTok{Groottepopulation }\OtherTok{\textless{}{-}}\NormalTok{ data2020}\SpecialCharTok{$}\NormalTok{Groottepopulation }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{replace}\NormalTok{(data2020}\SpecialCharTok{$}\NormalTok{BevolkGrootte }\SpecialCharTok{\textgreater{}=}\NormalTok{ BevolkMean2020, }\StringTok{"Bigger then average town"}\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ data2020, }
+       \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Groottepopulation, }\AttributeTok{y =}\NormalTok{ GrowthPercentagesupply)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"population size"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Growthpercentage housing supply"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Housing supply growth per subgroup"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 13 rows containing non-finite outside the scale range
+## (`stat_boxplot()`).
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/figure-latex/visualise_subpopulations-1.pdf}}
+
+This plot further helps understand why the rise in average house prices
+is higher in the more urban areas than in the suburban parts of the
+Netherlands. The growth in housing supply in percentages is clearly
+lower in the larger population sized local authorities than in the
+smaller ones. Less housing supply growth will eventually mean higher
+prices, since the demand will rise with less supply. Especially so in
+the bigger cities where most of the jobs will be centralized.
+
+\subsection{3.6 Event analysis}\label{event-analysis}
+
+Analyze the relationship between two variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(Weighted\_mean\_houseprices, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ jaar, }\AttributeTok{y =}\NormalTok{ weighted\_mean\_salesprice)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Year"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Price in € (x1000)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Weighted mean houseprice in the Netherlands per year"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =} \DecValTok{2016}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\AttributeTok{x =} \DecValTok{2018}\NormalTok{, }\AttributeTok{y =} \DecValTok{400000}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{, }\AttributeTok{label =} \StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Decline in mortgage}\SpecialCharTok{\textbackslash{}n}\StringTok{ interest rates"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}
+    \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\DecValTok{200000}\NormalTok{, }\DecValTok{500000}\NormalTok{, }\DecValTok{100000}\NormalTok{),    }
+    \AttributeTok{labels =} \ControlFlowTok{function}\NormalTok{(x) x }\SpecialCharTok{/} \DecValTok{1000}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{2012}\NormalTok{, }\DecValTok{2016}\NormalTok{, }\DecValTok{2020}\NormalTok{, }\DecValTok{2024}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Template_Assignment_files/figure-latex/analysis-1.pdf}}
+
+\textbf{Event Analysis}
+
+Looking at our plot, we observe a significant increase in housing prices
+from 2016 to 2020. Several factors influence the housing market,
+including mortgage interest rates, consumer confidence, and employment
+levels. According to De Nederlandsche Bank, mortgage interest rates
+steadily declined from 2010 to 2020 (DNB, n.d.). Notably, there was a
+sharper drop in interest rates between 2015 and 2020.
+
+\hfill\break
+This decline made mortgages more affordable, encouraging people to
+transition from renting to buying homes. As a result, the supply of
+available houses decreased, leading to upward pressure on prices.\\
+During the 2020--2024 period, interest rates continued to fall at a
+similar pace as in the previous period. Consequently, housing prices
+followed a comparable upward trend. Additionally, by introducing our new
+variable ``Growth Percentage Voorraad,'' we observed that housing
+inventory declined relative to the earlier period. This further
+reduction in available homes contributed to the continued increase in
+prices.\\
+Based on our analysis and supporting sources, we can conclude that
+declining mortgage rates and a shrinking housing supply were key drivers
+behind the rising housing prices (CBS, 2024a; DNB, n.d.; NOS, 2023;
+Rijksoverheid, 2023).
+
+\subsection{\texorpdfstring{\textbf{Discussion}}{Discussion}}\label{discussion}
+
+By plotting the line on the Y-axis, which represents housing prices over
+time, we could clearly observe a fast increase beginning in 2016. This
+visual representation helps us identify and confirm key turning points
+in the market. The plot not only highlights the timing of the surge in
+prices but also allows us to quantify the change showing that housing
+prices nearly doubled from that year onward. This visual evidence
+strengthens our event analysis by directly linking observed trends to
+economic developments. It allows us to contextualize the impact of
+falling mortgage interest rates and housing supply shortages within the
+broader timeline of price evolution. In this way, the Y-axis plot acts
+as a foundation for understanding the dynamics discussed in our
+analysis.
+
+\section{Part 5 - Reproducibility}\label{part-5---reproducibility}
+
+\subsection{5.1 Github repository link}\label{github-repository-link}
+
+Provide the link to your PUBLIC repository here:
+\url{https://github.com/}Dave01293/EBEProgramming
+
+\textbf{References list}
+
+Centraal Bureau voor de Statistiek. (2024a). Voorraad woningen en
+niet-woningen; mutaties, gebruiksfunctie, regio. Statline.
+\href{https://opendata.cbs.nl/statline/\#/CBS/nl/dataset/37230NED/table?fromstatweb}{StatLine
+- Voorraad woningen en niet-woningen; mutaties, gebruiksfunctie, regio\\
+} (Continuously updated dataset)
+
+Centraal Bureau voor de Statistiek. (2024b). Bevolking; kerncijfers.
+StatLine.\href{https://opendata.cbs.nl/\#/CBS/nl/dataset/81955NED/table}{https://opendata.cbs.nl/\#/CBS/nl/dataset/81955NED/table\\
+} (Continuously updated dataset)
+
+Centraal Bureau voor de Statistiek. (2025a). Bestaande koopwoningen;
+gemiddelde verkoopprijzen, regio. Statline.
+\url{https://opendata.cbs.nl/\#/CBS/nl/dataset/83625NED/table?ts=17507909682}\\
+(Continuously updated dataset)
+
+De Nederlandsche Bank. (n.d.). Rente \textbar{}
+Dashboard.\href{https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/}{https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/\\
+} (Continuously updated resource)
+
+NOS. (2023, November 11). Schreeuwend tekort aan woningen en hoge
+huizenprijzen: hoe is het zo
+gekomen?\url{https://nos.nl/collectie/13960/artikel/2497415-schreeuwend-tekort-aan-woningen-en-hoge-huizenprijzen-hoe-is-het-zo-gekomen}
+
+Rijksoverheid. (2023, July 24). 900.000 nieuwe woningen om aan groeiende
+vraag te voldoen.
+\url{https://www.rijksoverheid.nl/onderwerpen/volkshuisvesting-en-ruimte}
+
+Statista. (n.d.). Residential real estate in the
+Benelux.\href{https://www.statista.com/topics/4265/residential-real-estate-in-the-benelux/\#topicOverview}{https://www.statista.com/topics/4265/residential-real-estate-in-the-benelux/\#topicOverview\\
+} (Continuously updated topic page)
+
+\end{document}

@@ -7,7 +7,11 @@ Dave van den Berg - 2861451
 Ellen Schutte -
 Mathijs Baartscheer - 2863507"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: 
+  pdf_document:
+    latex_engine: xelatex
+  html_document: default
+always_allow_html: true
 ---
 
 # Set-up your environment
@@ -17,6 +21,8 @@ install.packages("tidyverse")
 install.packages("cbsodataR")
 install.packages("sf")
 install.packages("ggplot2")
+install.packages("tinytex")
+
 ```
 
 ```{r packages}
