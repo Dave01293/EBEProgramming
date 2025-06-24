@@ -55,25 +55,6 @@ Maindata$waarde.y <- NULL
 Maindata$Onderwerp.x <- NULL
 Maindata$Onderwerp.y <- NULL
 
-#filter per region
-plotdataAmersfoort = Maindata %>% filter(`Regio's` == "Amersfoort")
-
-#tijdsvisualisatie
-plotdataAmersfoort$jaar <- as.numeric(plotdataAmersfoort$jaar)
-
-ggplot(plotdataAmersfoort, aes(x = jaar, y = Verkoopprijs)) +
-  geom_point() +
-  xlab("Year") +
-  ylab("Price in € (x1000)") +
-  ggtitle("Housing prices per year (Amersfoort)") +
-  geom_line() +
-  geom_vline(xintercept = 2016) +
-  scale_y_continuous(
-    breaks = seq(300000, 500000, 100000),    
-    labels = function(x) x / 1000) +
-  scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
-
-
 #adding variables to Maindata 
 Maindata <- Maindata %>%
   group_by(`Regio's`) %>%
@@ -271,6 +252,6 @@ ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
   geom_vline(xintercept = 2016) +
   annotate("text", x = 2018, y = 400000, size = 4, label = "\nDecline in mortgage\n interest rates") +
   scale_y_continuous(
-    breaks = seq(300000, 500000, 100000),    
+    breaks = seq(200000, 500000, 100000),    
     labels = function(x) x / 1000) +
   scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
