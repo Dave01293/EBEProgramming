@@ -249,3 +249,5 @@ ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
     breaks = seq(200000, 500000, 100000),    
     labels = function(x) x / 1000) +
   scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
+
+
