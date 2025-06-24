@@ -1,6 +1,11 @@
 ---
-title: "Template"
-author: "Studentnames and studentnumbers here"
+title: "Quantifying a Social Problem: The Dutch Housing Crisis"
+author: "Matthijs Baars -
+Sem Klinge - 2826057
+Huub de Jong - 2852204
+Dave van den Berg - 2861451
+Ellen Schutte -
+Mathijs Baartscheer - 2863507"
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
@@ -83,10 +88,61 @@ Limitations to our data include that we are not looking at whether all the house
 Say we want to include only larger distances (above 2) in our dataset, we can filter for this.
 
 ```{r data_cleaning}
-mean(dataset$percollege)
+#population data wide to long
+
+population_long <- populationgrowth %>%
+  pivot_longer(
+    cols = c("2012", "2016", "2020", "2024"),
+    names_to = "jaar",
+    values_to = "waarde"
+  )
+
+# saleprice_houses wide to long
+
+saleprice_houses_long <- saleprice_houses %>%
+  pivot_longer(
+    cols = c("2012", "2016", "2020", "2024"),
+    names_to = "jaar",
+    values_to = "waarde")
 ```
 
-Please use a separate 'R block' of code for each type of cleaning. So, e.g. one for missing values, a new one for removing unnecessary variables etc.
+```{r}
+#Rename colums from "jaar" to "perioden"
+number_of_houses <- number_of_houses %>%
+  rename(jaar = Perioden)
+
+number_of_houses$jaar <- as.character(number_of_houses$jaar)
+```
+
+```{r}
+#merging datasets "saleprice_houses_long" and "population_long" into 1 dataset: "dataframe"
+maindataframe <- full_join(saleprice_houses_long, population_long, by=c("jaar", "Regio's"))
+
+#merging datasets "dataframe" and "number_of_houses" into 1 dataset: "df"
+maindf <- full_join(maindataframe, number_of_houses, by=c("jaar","Regio's"))
+
+#Creating Maindata by removing unnecessary colums from df
+Maindata <- remove_missing(maindf, na.rm = FALSE,
+                           vars = c("waarde.x", "waarde.y","Beginstand voorraad", "nieuwbouw", "eindstand voorraad"), 
+                           finite = FALSE)
+Maindata$saleprice <- Maindata$waarde.x
+Maindata$BevolkGrootte <- Maindata$waarde.y
+Maindata$waarde.x <- NULL
+Maindata$waarde.y <- NULL
+Maindata$Onderwerp.x <- NULL
+Maindata$Onderwerp.y <- NULL
+```
+
+```{r}
+#adding variables to Maindata 
+Maindata <- Maindata %>%
+  group_by(`Regio's`) %>%
+  mutate(GrowthPercentagepopulation = (BevolkGrootte / lag(BevolkGrootte)-1)*100)
+
+Maindata <- Maindata %>%
+  group_by(`Regio's`) %>%
+  mutate(GrowthPercentagesupply = (`Eindstand voorraad` / lag(`Eindstand voorraad`)-1)*100)
+```
 
 **Data Cleaning**
 
@@ -96,10 +152,74 @@ We had to use the data for the number of local authorities from the year 2012 be
 
 ## 3.2 Generate necessary variables
 
-Variable 1
+Variable 1:
+
+Weighted average sale price of a house in the Netherlands, calculated by weighting the average sale price in each municipality by the number of houses in that municipality, relative to the total number of houses nationwide.
 
 ```{r gen_var1}
+#houses filtered on 2012
+end_of_year_supply_houses_2012 <- subset (number_of_houses, jaar == 2012)
 
+#filter ensuring only end_of_yearsupply remains
+end_of_year_supply_houses_2012$`Beginstand supply`<- NULL
+end_of_year_supply_houses_2012$newly_built_housing <- NULL
+
+end_of_year_supply_houses_2012 <- inner_join(end_of_year_supply_houses_2012, saleprice_municipality_2012, by = join_by(`Regio's` == statnaam))
+#weighted average 
+end_of_year_supply_houses_2012$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2012$saleprice , end_of_year_supply_houses_2012$`Eindstand voorraad`, na.rm = T)
+
+
+###########Time visualization weighted average houseprice in 2016#############
+#houses filtered on 2016
+end_of_year_supply_houses_2016 <- subset (number_of_houses, jaar == 2016)
+
+#filter ensuring only end_of_year supply remains
+end_of_year_supply_houses_2016$`Beginstand supply`<- NULL
+end_of_year_supply_houses_2016$newly_built_housing <- NULL
+
+end_of_year_supply_houses_2016 <- inner_join(end_of_year_supply_houses_2016, saleprice_municipality_2016, by = join_by(`Regio's` == statnaam))
+#weighted average 
+end_of_year_supply_houses_2016$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2016$saleprice , end_of_year_supply_houses_2016$`Eindstand voorraad`, na.rm = T)
+
+###########Time visualization weighted average houseprice in 2020#############
+#houses filtered on 2020
+end_of_year_supply_houses_2020 <- subset (number_of_houses, jaar == 2020)
+
+#filter ensuring only end_of_year supply remains
+end_of_year_supply_houses_2020$`Beginstand supply`<- NULL
+end_of_year_supply_houses_2020$newly_built_housing <- NULL
+
+end_of_year_supply_houses_2020 <- inner_join(end_of_year_supply_houses_2020, saleprice_municipality_2020, by = join_by(`Regio's` == statnaam))
+#weighted average 
+end_of_year_supply_houses_2020$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2020$saleprice , end_of_year_supply_houses_2020$`Eindstand voorraad`, na.rm = T)
+
+###########Time visualization weighted average houseprice in 2024#############
+#houses filtered on 2024
+end_of_year_supply_houses_2024 <- subset (number_of_houses, jaar == 2024)
+
+#filter ensuring only end_of_year supply remains
+end_of_year_supply_houses_2024$`Beginstand supply`<- NULL
+end_of_year_supply_houses_2024$newly_built_housing <- NULL
+
+end_of_year_supply_houses_2024 <- inner_join(end_of_year_supply_houses_2024, saleprice_municipality_2024, by = join_by(`Regio's` == statnaam))
+#weighted average 
+end_of_year_supply_houses_2024$weighted_mean_salesprice = weighted.mean(end_of_year_supply_houses_2024$saleprice , end_of_year_supply_houses_2024$`Eindstand voorraad`, na.rm = T)
+
+end_of_year_supply_houses <-  end_of_year_supply_houses_2012 
+end_of_year_supply_houses = rbind(end_of_year_supply_houses, end_of_year_supply_houses_2016)
+end_of_year_supply_houses = rbind(end_of_year_supply_houses, end_of_year_supply_houses_2020)
+end_of_year_supply_houses = rbind(end_of_year_supply_houses, end_of_year_supply_houses_2024)
+
+###filter ensuring only 1 region remains
+Weighted_mean_houseprices = end_of_year_supply_houses %>% filter(`Regio's` == "Amersfoort")
+
+###filterensuring only Weighted_mean_houseprices remains
+Weighted_mean_houseprices = Weighted_mean_houseprices %>%
+  select(jaar.x, weighted_mean_salesprice)
+Weighted_mean_houseprices = Weighted_mean_houseprices %>% rename(jaar = jaar.x)
+
+#ensuring year will be treated as numeric
+Weighted_mean_houseprices$jaar <- as.numeric(Weighted_mean_houseprices$jaar)
 ```
 
 Variable 2
@@ -117,13 +237,107 @@ For the next variable, “growth percentage in housing supply,” we used the su
 ## 3.3 Visualize temporal variation
 
 ```{r}
+ggplot(Weighted_mean_houseprices, aes(x = jaar, y = weighted_mean_salesprice)) +
+  geom_point() +
+  xlab("Year") +
+  ylab("Price in € (x1000)") +
+  ggtitle("Weighted mean houseprice in the Netherlands per year") +
+  geom_line() +
+  geom_vline(xintercept = 2016) +
+  annotate("text", x = 2018, y = 400000, size = 4, label = "\nDecline in mortgage\n interest rates") +
+  scale_y_continuous(
+    breaks = seq(200000, 500000, 100000),    
+    labels = function(x) x / 1000) +
+  scale_x_continuous(breaks = c(2012, 2016, 2020, 2024))
 
 ```
 
 ## 3.4 Visualize spatial variation
 
 ```{r visualise_map}
+#extreme saleprice_municipality
+minimumprice = min(Maindata$saleprice, na.rm = TRUE)
+maximumprice = max(Maindata$saleprice, na.rm = TRUE)
 
+##########Heatmap Netherlands average salesprice house in 2012###########
+#municipality in 2012
+municipality_2012 <- cbs_get_sf("gemeente", 2012)
+
+#create dataset with saleprice_houses 2012
+
+saleprice_houses_2012 <- subset(Maindata, jaar == 2012) 
+
+#filter dataset, region, saleprice and year remains
+saleprice_houses_2012 <- saleprice_houses_2012 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata
+saleprice_municipality_2012 <- municipality_2012 %>% inner_join(saleprice_houses_2012, by = join_by(statnaam == `Regio's`))
+
+#Creating Heatmap 2012 
+ggplot(saleprice_municipality_2012, aes(fill = saleprice)) +
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimumprice, maximumprice), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2012(€)") 
+
+##########Heatmap Netherlands average salesprice house in 2016###########
+#municipality in 2016
+municipality_2016 <- cbs_get_sf("gemeente", 2016)
+
+#create dataset with saleprice_houses 2016
+
+saleprice_houses_2016 <- subset(Maindata, jaar == 2016) 
+
+#filter ensuring only region, saleprice and year remains
+saleprice_houses_2016 <- saleprice_houses_2016 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata in 2016
+saleprice_municipality_2016 <- municipality_2016 %>% inner_join(saleprice_houses_2016, by = join_by(statnaam == `Regio's`))
+
+#Creating Heatmap 
+ggplot(saleprice_municipality_2016, aes(fill = saleprice)) +
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimumprice, maximumprice),low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2016 (€)") 
+
+##########Heatmap Netherlands average salesprice house in 2020###########
+#municipality in 2020
+municipality_2020 <- cbs_get_sf("gemeente", 2020)
+
+#create dataset with saleprice_houses 2020
+
+saleprice_houses_2020 <- subset(Maindata, jaar == 2020) 
+
+#filter ensuring only region, saleprice and year remains
+saleprice_houses_2020 <- saleprice_houses_2020 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata in 2020
+saleprice_municipality_2020 <- municipality_2020 %>% inner_join(saleprice_houses_2020, by = join_by(statnaam == `Regio's`))
+
+#Creating Heatmap 
+ggplot(saleprice_municipality_2020, aes(fill = saleprice)) +
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimumprice, maximumprice), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2020 (€)") 
+
+##########Heatmap Netherlands average salesprice house in 2024###########
+#municipality in 2024
+municipality_2024 <- cbs_get_sf("gemeente", 2024)
+
+#create dataset with saleprice_houses 2024
+
+saleprice_houses_2024 <- subset(Maindata, jaar == 2024) 
+
+#filter ensuring only region, saleprice and year remains
+saleprice_houses_2024 <- saleprice_houses_2024 %>%
+  select(`Regio's`, jaar, saleprice)
+
+#merging municipalitydata with salepricedata in 2024
+saleprice_municipality_2024 <- municipality_2024 %>% inner_join(saleprice_houses_2024, by = join_by(statnaam == `Regio's`))
+
+#Creating Heatmap 
+ggplot(saleprice_municipality_2024, aes(fill = saleprice)) +
+  geom_sf(color = "white", size = 0.1) +
+  scale_fill_gradient(limits = c(minimumprice, maximumprice), low = "#00FFFF", high = "red", labels = scales::label_number(big.mark = ".", decimal.mark = ","), name = "Average salesprice house NL in 2024 (€)") 
 ```
 
 Here you provide a description of why the plot above is relevant to your specific social problem.
@@ -143,19 +357,23 @@ We can conclude from our map that the housing prices are rising at a rapid rate,
 What is the poverty rate by state?
 
 ```{r visualise_subpopulations}
-dataset$inmetro <- dataset$inmetro %>% as.factor()
-# Boxplot of poverty rate by state using the 'midwest' dataset
-ggplot(dataset, aes(x = inmetro, y = percadultpoverty)) +
+data2020 <- subset(Maindata, jaar == 2020)
+
+BevolkMean2020 <- mean(data2020$BevolkGrootte, na.rm = TRUE)
+
+data2020$Groottepopulation <- 0
+data2020$Groottepopulation <- data2020$Groottepopulation %>% 
+  replace(data2020$BevolkGrootte < BevolkMean2020, "Smaller then average town")
+data2020$Groottepopulation <- data2020$Groottepopulation %>% 
+  replace(data2020$BevolkGrootte >= BevolkMean2020, "Bigger then average town")
+
+ggplot(data = data2020, 
+       aes(x = Groottepopulation, y = GrowthPercentagesupply)) +
   geom_boxplot() +
-  labs(
-    title = "Distribution of Poverty Rates by Metropolitan status (Midwest counties)",
-    x = "Metropolitan Area",
-    y = "Poverty Rate of Adults (%)"
-  ) +
-  theme_minimal() +
-  theme(
-    legend.position = "right"
-  )
+  xlab("population size") +
+  ylab("Growth housing supply in percentage") +
+  ggtitle("Housing supply growth per subgroup")
+
 ```
 
 This plot further helps understand why the rise in average house prices is higher in the more urban areas than in the suburban parts of the Netherlands. The growth in housing supply in percentages is clearly lower in the larger population sized local authorities than in the smaller ones. Less housing supply growth will eventually mean higher prices, since the demand will rise with less supply. Especially so in the bigger cities where most of the jobs will be centralized.
@@ -165,6 +383,8 @@ This plot further helps understand why the rise in average house prices is highe
 Analyze the relationship between two variables.
 
 ```{r analysis}
+
+
 
 ```
 
@@ -189,18 +409,18 @@ Provide the link to your PUBLIC repository here: ...
 
 **References list**
 
-Centraal Bureau voor de Statistiek. (2024a). Bestaande koopwoningen; gemiddelde verkoopprijzen, regio. StatLine.[ https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb\
+Centraal Bureau voor de Statistiek. (2024a). Bestaande koopwoningen; gemiddelde verkoopprijzen, regio. StatLine.[https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb\
 ](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/37230NED/table?fromstatweb) (Continuously updated dataset)
 
-Centraal Bureau voor de Statistiek. (2024b). Bevolking; kerncijfers. StatLine.[ https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table\
+Centraal Bureau voor de Statistiek. (2024b). Bevolking; kerncijfers. StatLine.[https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table\
 ](https://opendata.cbs.nl/#/CBS/nl/dataset/81955NED/table) (Continuously updated dataset)
 
-De Nederlandsche Bank. (n.d.). Rente \| Dashboard.[ https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/\
+De Nederlandsche Bank. (n.d.). Rente \| Dashboard.[https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/\
 ](https://www.dnb.nl/actuele-economische-vraagstukken/woningmarkt/) (Continuously updated resource)
 
-NOS. (2023, November 11). Schreeuwend tekort aan woningen en hoge huizenprijzen: hoe is het zo gekomen?[ https://nos.nl/collectie/13960/artikel/2497415-schreeuwend-tekort-aan-woningen-en-hoge-huizenprijzen-hoe-is-het-zo-gekomen](https://nos.nl/collectie/13960/artikel/2497415-schreeuwend-tekort-aan-woningen-en-hoge-huizenprijzen-hoe-is-het-zo-gekomen)
+NOS. (2023, November 11). Schreeuwend tekort aan woningen en hoge huizenprijzen: hoe is het zo gekomen?<https://nos.nl/collectie/13960/artikel/2497415-schreeuwend-tekort-aan-woningen-en-hoge-huizenprijzen-hoe-is-het-zo-gekomen>
 
 Rijksoverheid. (2023, July 24). 900.000 nieuwe woningen om aan groeiende vraag te voldoen. <https://www.rijksoverheid.nl/onderwerpen/volkshuisvesting-en-ruimte>
 
-Statista. (n.d.). Residential real estate in the Benelux.[ https://www.statista.com/topics/4265/residential-real-estate-in-the-benelux/#topicOverview\
+Statista. (n.d.). Residential real estate in the Benelux.[https://www.statista.com/topics/4265/residential-real-estate-in-the-benelux/#topicOverview\
 ](https://www.statista.com/topics/4265/residential-real-estate-in-the-benelux/#topicOverview) (Continuously updated topic page)
